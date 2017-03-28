@@ -31,6 +31,9 @@ class ViewController: UIViewController {
     var totalDistance: String!
     var totalDurationInSeconds: UInt = 0
     var totalDuration: String!
+    var dict:[UInt:AnyObject] = [:]
+    var minDuration:UInt = UInt.max
+    var bufferDuration:UInt = 0
     
     
     var originMarker: GMSMarker!
@@ -54,15 +57,18 @@ class ViewController: UIViewController {
     
     @IBAction func parseAndGet(sender: AnyObject) {
         view.endEditing(true)
+        
         let camera: GMSCameraPosition = GMSCameraPosition.cameraWithLatitude(48.857165, longitude: 2.354613, zoom: 1.0)
         mapView1.camera = camera
         var sourceStr: String = origin.text!
         var destinationStr: String = destination.text!
         var error: NSError?
         var counter:UInt = 0
+        self.minDuration = UInt.max
+        self.bufferDuration = 0
         var directionsURl = baseURLDirections+"origin="+sourceStr+"&destination="+destinationStr+"&alternatives=true"
         directionsURl = directionsURl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
-        
+        mapView1.clear()
         let finalURL = NSURL(string: directionsURl)
         print("final url")
         let directionsData = NSData(contentsOfURL: finalURL!)
@@ -96,11 +102,17 @@ class ViewController: UIViewController {
                                 print("origin address\(self.originAddress) destination \(self.destinationAddress)")
                                 
                                 self.calculateTotalDistanceAndDuration(item)
-                                self.configureMapAndMarkersForRoute()
-                                print("counter is \(counter)")
-                                self.drawRoute(counter)
+                                
+                                if(self.bufferDuration < self.minDuration) {
+                                    self.minDuration = self.bufferDuration
+                                }
+                                self.dict[self.bufferDuration] = self.overviewPolyline
+                                
+                                
                                 counter = counter+1
                             }
+                            self.configureMapAndMarkersForRoute()
+                            self.drawRoute()
                             
                         }
                         
@@ -127,7 +139,7 @@ class ViewController: UIViewController {
             totalDurationInSeconds += (step["duration"] as! Dictionary<NSObject, AnyObject>)["value"] as! UInt
         }
         
-        
+        self.bufferDuration = totalDurationInSeconds
         let distanceInKilometers: Double = Double(totalDistanceInMeters / 1000)
         totalDistance = "Total Distance: \(distanceInKilometers) Km"
         
@@ -150,6 +162,7 @@ class ViewController: UIViewController {
     
     
     func configureMapAndMarkersForRoute() {
+        mapView1.clear()
         mapView1.camera = GMSCameraPosition.cameraWithTarget(self.originCoordinate, zoom: 9.0)
         originMarker = GMSMarker(position: self.originCoordinate)
         originMarker.map = self.mapView1
@@ -162,17 +175,24 @@ class ViewController: UIViewController {
         destinationMarker.title = self.destinationAddress
     }
     
-    func drawRoute(counter:UInt) {
-        let route = self.overviewPolyline["points"] as! String
-        //var counter:UInt = 0
-        let path: GMSPath = GMSPath(fromEncodedPath: route)!
-        routePolyline = GMSPolyline(path: path)
-        if counter == 0{
-            routePolyline.strokeColor = UIColor.blueColor()
-        } else{
-            routePolyline.strokeColor = UIColor.darkGrayColor()
+    func drawRoute() {
+        for(key,val) in dict {
+            if(key != self.minDuration){
+                let r = dict[key]
+                let s = r!["points"] as! String
+                let path: GMSPath = GMSPath(fromEncodedPath: s)!
+                routePolyline = GMSPolyline(path: path)
+                routePolyline.strokeColor = UIColor.blueColor()
+                routePolyline.strokeWidth = 1
+                routePolyline.map = mapView1
+                
+            }
         }
-        routePolyline.strokeWidth = 5
+        let u = dict[self.minDuration]
+        let v = u!["points"] as! String
+        let w:GMSPath = GMSPath(fromEncodedPath: v)!
+        routePolyline = GMSPolyline(path: w)
+        routePolyline.strokeColor = UIColor.greenColor()
         routePolyline.map = mapView1
     }
 
