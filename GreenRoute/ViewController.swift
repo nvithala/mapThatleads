@@ -35,48 +35,51 @@ class ViewController: UIViewController {
     var minDuration:UInt = UInt.max
     var bufferDuration:UInt = 0
     
+    // in testing
+    var displayDuration:String = ""
+    var displayDistance:String = ""
+    var displayRoute:UInt = 0
     
+    
+    //markers
     var originMarker: GMSMarker!
     var destinationMarker: GMSMarker!
     var routePolyline: GMSPolyline!
     
+    //manage locations
     let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        //let camera: GMSCameraPosition = GMSCameraPosition.cameraWithLatitude(48.857165, longitude: 2.354613, zoom: 1.0)
-        //mapView1.camera = camera
-        
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
-        
-        print("loaded camera")
+        print("Loaded camera")
     }
-
     
     @IBAction func parseAndGet(sender: AnyObject) {
         view.endEditing(true)
         
         let camera: GMSCameraPosition = GMSCameraPosition.cameraWithLatitude(48.857165, longitude: 2.354613, zoom: 1.0)
         mapView1.camera = camera
-        var sourceStr: String = origin.text!
-        var destinationStr: String = destination.text!
+        let sourceStr: String = origin.text!
+        let destinationStr: String = destination.text!
         var error: NSError?
-        var counter:UInt = 0
+        
+        //reset values
         self.minDuration = UInt.max
         self.bufferDuration = 0
         self.dict = [:]
+
+        self.displayRoute = 0
+        self.displayDuration = ""
         var directionsURl = baseURLDirections+"origin="+sourceStr+"&destination="+destinationStr+"&alternatives=true"
         directionsURl = directionsURl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
-        //mapView1.clear()
         let finalURL = NSURL(string: directionsURl)
-        print("final url")
         let directionsData = NSData(contentsOfURL: finalURL!)
-        print("directions data")
+
         dispatch_async(dispatch_get_main_queue(),{ () -> Void in
-            //let directionsData = NSData(contentsOfURL: finalURL!)
-            print(" in here")
+           
+            print("start dispatching")
             // to deserialize the data.
             do {
                 if let dictionary = try NSJSONSerialization.JSONObjectWithData(directionsData!, options: .MutableContainers) as? Dictionary<NSObject,AnyObject> {
@@ -87,7 +90,9 @@ class ViewController: UIViewController {
                         let status = dictionary["status"] as! String
                         if status == "OK" {
                             self.notSelectedRoute = (dictionary["routes"] as! Array<Dictionary<NSObject, AnyObject>>)
+                            
                             for item in self.notSelectedRoute {
+                                self.displayRoute = self.displayRoute+1
                                 self.overviewPolyline = item["overview_polyline"] as! Dictionary<NSObject, AnyObject>
                                 let legs = item["legs"] as! Array<Dictionary<NSObject, AnyObject>>
                                 
@@ -101,16 +106,13 @@ class ViewController: UIViewController {
                                 self.destinationAddress = legs[legs.count - 1]["end_address"] as! String
                                 
                                 print("origin address\(self.originAddress) destination \(self.destinationAddress)")
-                                
+                               // self.displayDuration = self.displayDuration + "Route\(self.displayRoute)  distance is \(self.totalDistance)  duration is \(self.totalDuration) \n"
                                 self.calculateTotalDistanceAndDuration(item)
                                 
                                 if(self.bufferDuration < self.minDuration) {
                                     self.minDuration = self.bufferDuration
                                 }
                                 self.dict[self.bufferDuration] = self.overviewPolyline
-                                
-                                
-                                counter = counter+1
                             }
                             self.configureMapAndMarkersForRoute()
                             self.drawRoute()
@@ -142,8 +144,7 @@ class ViewController: UIViewController {
         self.bufferDuration = totalDurationInSeconds
         let distanceInKilometers: Double = Double(totalDistanceInMeters / 1000)
         totalDistance = "Total Distance: \(distanceInKilometers) Km"
-        
-        
+
         let mins = totalDurationInSeconds / 60
         let hours = mins / 60
         let days = hours / 24
@@ -151,11 +152,17 @@ class ViewController: UIViewController {
         let remainingMins = mins % 60
         let remainingSecs = totalDurationInSeconds % 60
         
+       
+        
+        
         totalDuration = "Duration: \(days) d, \(remainingHours) h, \(remainingMins) mins, \(remainingSecs) secs"
         distance.text = totalDistance
         duration.text = totalDuration
         print(totalDuration)
         print(totalDistance)
+        self.displayDuration = "\(self.displayDuration)" + "Route \(self.displayRoute) \(totalDistance) \(totalDuration) \n"
+        print("*")
+        print("\(self.displayDuration)")
     }
 
     func configureMapAndMarkersForRoute() {
@@ -165,6 +172,10 @@ class ViewController: UIViewController {
         originMarker.map = self.mapView1
         originMarker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
         originMarker.title = self.originAddress
+        originMarker.snippet = "hi"
+        originMarker.infoWindowAnchor = CGPoint(x: 2, y:2)
+        
+       // mapView1.selectedMarker = originMarker
         
         destinationMarker = GMSMarker(position: self.destinationCoordinate)
         destinationMarker.map = self.mapView1
@@ -175,7 +186,6 @@ class ViewController: UIViewController {
     func drawRoute() {
         for(key,val) in dict {
             if(key != self.minDuration){
-                print("KEYyyy\(key)")
                 let r = dict[key]
                 let s = r!["points"] as! String
                 let path: GMSPath = GMSPath(fromEncodedPath: s)!
