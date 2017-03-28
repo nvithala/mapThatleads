@@ -66,9 +66,10 @@ class ViewController: UIViewController {
         var counter:UInt = 0
         self.minDuration = UInt.max
         self.bufferDuration = 0
+        self.dict = [:]
         var directionsURl = baseURLDirections+"origin="+sourceStr+"&destination="+destinationStr+"&alternatives=true"
         directionsURl = directionsURl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
-        mapView1.clear()
+        //mapView1.clear()
         let finalURL = NSURL(string: directionsURl)
         print("final url")
         let directionsData = NSData(contentsOfURL: finalURL!)
@@ -113,7 +114,6 @@ class ViewController: UIViewController {
                             }
                             self.configureMapAndMarkersForRoute()
                             self.drawRoute()
-                            
                         }
                         
                     }
@@ -158,9 +158,6 @@ class ViewController: UIViewController {
         print(totalDistance)
     }
 
-    
-    
-    
     func configureMapAndMarkersForRoute() {
         mapView1.clear()
         mapView1.camera = GMSCameraPosition.cameraWithTarget(self.originCoordinate, zoom: 9.0)
@@ -178,6 +175,7 @@ class ViewController: UIViewController {
     func drawRoute() {
         for(key,val) in dict {
             if(key != self.minDuration){
+                print("KEYyyy\(key)")
                 let r = dict[key]
                 let s = r!["points"] as! String
                 let path: GMSPath = GMSPath(fromEncodedPath: s)!
