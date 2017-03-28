@@ -180,8 +180,8 @@ class ViewController: UIViewController {
                 let s = r!["points"] as! String
                 let path: GMSPath = GMSPath(fromEncodedPath: s)!
                 routePolyline = GMSPolyline(path: path)
-                routePolyline.strokeColor = UIColor.blueColor()
-                routePolyline.strokeWidth = 1
+                routePolyline.strokeColor = UIColor.grayColor()
+                routePolyline.strokeWidth = 2
                 routePolyline.map = mapView1
                 
             }
@@ -191,6 +191,7 @@ class ViewController: UIViewController {
         let w:GMSPath = GMSPath(fromEncodedPath: v)!
         routePolyline = GMSPolyline(path: w)
         routePolyline.strokeColor = UIColor.greenColor()
+        routePolyline.strokeWidth = 2
         routePolyline.map = mapView1
     }
 
