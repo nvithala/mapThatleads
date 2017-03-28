@@ -10,7 +10,6 @@
 		5E85B45A1E8020CE00E7E8D2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E85B4591E8020CE00E7E8D2 /* AppDelegate.swift */; };
 		5E85B45C1E8020CE00E7E8D2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E85B45B1E8020CE00E7E8D2 /* ViewController.swift */; };
 		5E85B45F1E8020CE00E7E8D2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E85B45D1E8020CE00E7E8D2 /* Main.storyboard */; };
-		5E85B4611E8020CE00E7E8D2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E85B4601E8020CE00E7E8D2 /* Assets.xcassets */; };
 		5E85B4641E8020CE00E7E8D2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E85B4621E8020CE00E7E8D2 /* LaunchScreen.storyboard */; };
 		5E85B46C1E80271100E7E8D2 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5E85B46B1E80271100E7E8D2 /* GoogleMaps.bundle */; };
 		5E85B46E1E80271A00E7E8D2 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E85B46D1E80271A00E7E8D2 /* GoogleMaps.framework */; };
@@ -30,6 +29,7 @@
 		5E85B48A1E802BC800E7E8D2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E85B4891E802BC800E7E8D2 /* UIKit.framework */; };
 		5E85B48C1E802BD000E7E8D2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E85B48B1E802BD000E7E8D2 /* CoreGraphics.framework */; };
 		5E85B48E1E802BD800E7E8D2 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E85B48D1E802BD800E7E8D2 /* Accelerate.framework */; };
+		A8F2AEE21E89A901006C942B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8F2AEE11E89A901006C942B /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,7 +37,6 @@
 		5E85B4591E8020CE00E7E8D2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5E85B45B1E8020CE00E7E8D2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		5E85B45E1E8020CE00E7E8D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		5E85B4601E8020CE00E7E8D2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5E85B4631E8020CE00E7E8D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5E85B4651E8020CE00E7E8D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5E85B46B1E80271100E7E8D2 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GoogleMaps.bundle; sourceTree = "<group>"; };
@@ -58,6 +57,7 @@
 		5E85B4891E802BC800E7E8D2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5E85B48B1E802BD000E7E8D2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		5E85B48D1E802BD800E7E8D2 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		A8F2AEE11E89A901006C942B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +107,7 @@
 				5E85B4731E80278500E7E8D2 /* AVFoundation.framework */,
 				5E85B4581E8020CE00E7E8D2 /* GreenRoute */,
 				5E85B4571E8020CE00E7E8D2 /* Products */,
+				A8F2AEE11E89A901006C942B /* Assets.xcassets */,
 			);
 			sourceTree = "<group>";
 		};
@@ -128,7 +129,6 @@
 				5E85B4591E8020CE00E7E8D2 /* AppDelegate.swift */,
 				5E85B45B1E8020CE00E7E8D2 /* ViewController.swift */,
 				5E85B45D1E8020CE00E7E8D2 /* Main.storyboard */,
-				5E85B4601E8020CE00E7E8D2 /* Assets.xcassets */,
 				5E85B4621E8020CE00E7E8D2 /* LaunchScreen.storyboard */,
 				5E85B4651E8020CE00E7E8D2 /* Info.plist */,
 			);
@@ -167,6 +167,7 @@
 				TargetAttributes = {
 					5E85B4551E8020CE00E7E8D2 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = MK3EREN6D7;
 					};
 				};
 			};
@@ -194,8 +195,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E85B4641E8020CE00E7E8D2 /* LaunchScreen.storyboard in Resources */,
-				5E85B4611E8020CE00E7E8D2 /* Assets.xcassets in Resources */,
 				5E85B45F1E8020CE00E7E8D2 /* Main.storyboard in Resources */,
+				A8F2AEE21E89A901006C942B /* Assets.xcassets in Resources */,
 				5E85B46C1E80271100E7E8D2 /* GoogleMaps.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -255,6 +256,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -301,6 +303,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -323,11 +326,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/GreenRoute",
 				);
 				INFOPLIST_FILE = GreenRoute/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.map.GreenRoute;
@@ -339,11 +344,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/GreenRoute",
 				);
 				INFOPLIST_FILE = GreenRoute/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.map.GreenRoute;
@@ -370,6 +377,7 @@
 				5E85B46A1E8020CE00E7E8D2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

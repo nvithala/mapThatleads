@@ -37,16 +37,23 @@ class ViewController: UIViewController {
     var destinationMarker: GMSMarker!
     var routePolyline: GMSPolyline!
     
+    let locationManager = CLLocationManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         //let camera: GMSCameraPosition = GMSCameraPosition.cameraWithLatitude(48.857165, longitude: 2.354613, zoom: 1.0)
         //mapView1.camera = camera
-        print("loadeed camera")
+        
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        
+        print("loaded camera")
     }
 
     
     @IBAction func parseAndGet(sender: AnyObject) {
+        view.endEditing(true)
         let camera: GMSCameraPosition = GMSCameraPosition.cameraWithLatitude(48.857165, longitude: 2.354613, zoom: 1.0)
         mapView1.camera = camera
         var sourceStr: String = origin.text!
@@ -169,5 +176,34 @@ class ViewController: UIViewController {
         routePolyline.map = mapView1
     }
 
+}
+
+extension ViewController: CLLocationManagerDelegate {
+    // 2
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        // 3
+        if status == .AuthorizedWhenInUse {
+            
+            // 4
+            locationManager.startUpdatingLocation()
+            
+            //5
+            mapView1.myLocationEnabled = true
+            mapView1.settings.myLocationButton = true
+        }
+    }
+    
+    // 6
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            
+            // 7
+            mapView1.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+            
+            // 8
+            locationManager.stopUpdatingLocation()
+        }
+        
+    }
 }
 
