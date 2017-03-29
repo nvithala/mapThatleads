@@ -34,6 +34,10 @@ class ViewController: UIViewController {
     var dict:[UInt:AnyObject] = [:]
     var minDuration:UInt = UInt.max
     var bufferDuration:UInt = 0
+    var dataDict:[Double:Double] = [:]
+    var routeDict:[UInt:Double] = [:]
+    var totalFuel:Double = 0
+    
     
     // in testing
     var displayDuration:String = ""
@@ -76,6 +80,23 @@ class ViewController: UIViewController {
         directionsURl = directionsURl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
         let finalURL = NSURL(string: directionsURl)
         let directionsData = NSData(contentsOfURL: finalURL!)
+        
+        dataDict[8] = 0.07
+        dataDict[16] = 0.065
+        dataDict[18] = 0.065
+        dataDict[20] = 0.06
+        dataDict[25] = 0.05
+        dataDict[30] = 0.046
+        dataDict[35] = 0.043
+        dataDict[40] = 0.041
+        dataDict[45] = 0.04
+        dataDict[50] = 0.038
+        dataDict[55] = 0.036
+        dataDict[60] = 0.0385
+        dataDict[65] = 0.04
+        dataDict[70] = 0.042
+        dataDict[75] = 0.05
+        dataDict[80] = 0.079
 
         dispatch_async(dispatch_get_main_queue(),{ () -> Void in
            
@@ -90,11 +111,11 @@ class ViewController: UIViewController {
                         let status = dictionary["status"] as! String
                         if status == "OK" {
                             self.notSelectedRoute = (dictionary["routes"] as! Array<Dictionary<NSObject, AnyObject>>)
-                            
+
                             for item in self.notSelectedRoute {
                                 self.displayRoute = self.displayRoute+1
                                 self.overviewPolyline = item["overview_polyline"] as! Dictionary<NSObject, AnyObject>
-                                let legs = item["legs"] as! Array<Dictionary<NSObject, AnyObject>>
+                                var legs = item["legs"] as! Array<Dictionary<NSObject, AnyObject>>
                                 
                                 let startLoc = legs[0]["start_location"] as! Dictionary<NSObject, AnyObject>
                                 self.originCoordinate =  CLLocationCoordinate2DMake(startLoc["lat"] as! Double, startLoc["lng"] as! Double)
@@ -106,7 +127,6 @@ class ViewController: UIViewController {
                                 self.destinationAddress = legs[legs.count - 1]["end_address"] as! String
                                 
                                 print("origin address\(self.originAddress) destination \(self.destinationAddress)")
-                               // self.displayDuration = self.displayDuration + "Route\(self.displayRoute)  distance is \(self.totalDistance)  duration is \(self.totalDuration) \n"
                                 self.calculateTotalDistanceAndDuration(item)
                                 
                                 if(self.bufferDuration < self.minDuration) {
@@ -114,6 +134,7 @@ class ViewController: UIViewController {
                                 }
                                 self.dict[self.bufferDuration] = self.overviewPolyline
                             }
+                            
                             self.configureMapAndMarkersForRoute()
                             self.drawRoute()
                         }
@@ -128,11 +149,56 @@ class ViewController: UIViewController {
         
     }
 
-    
+    func calFuel(dum:Array<Dictionary<NSObject, AnyObject>>) -> Double{
+        let steps = dum as NSArray
+        var fuelForLeg = 0.0
+        var distanceLeg = 0.0
+        for step in steps {
+            let distanceMetres = (step["distance"] as! Dictionary<NSObject, AnyObject>)["value"] as! Double
+            let durationSeconds = (step["duration"] as! Dictionary<NSObject, AnyObject>)["value"] as! Double
+            let distanceMiles = distanceMetres * 0.000621371
+            let durationHours = durationSeconds / 3600
+            let speed = distanceMiles / durationHours
+            var minVal = 0.0
+            for (key,value) in dataDict {
+                if(key == speed){
+                    minVal = value
+                    break;
+                } else {
+                    if(minVal == 0.0){
+                        minVal = value
+                    } else {
+                        if(key>speed && key<minVal){
+                            minVal = value
+                        }
+                    }
+                }
+            }
+            distanceLeg += distanceMiles
+            print("distance\(distanceMiles)")
+            
+            print("duration\(durationHours)")
+            let gallons = minVal*distanceMiles
+            fuelForLeg += gallons
+            //print("GALLONS\(gallons)")
+            
+        }
+        print("distance\(distanceLeg)")
+        return fuelForLeg
+    }
+
     func calculateTotalDistanceAndDuration(dum:Dictionary<NSObject,AnyObject>) {
-        
+
         let legs = dum["legs"]as! NSArray
         
+        // to calculate speed for each leg in a step, fuel consumed is calculated by the called method.
+        for leg in legs {
+            let steps = leg["steps"] as! Array<Dictionary<NSObject, AnyObject>>
+            var fuelForLeg = calFuel(steps)
+            self.routeDict[displayRoute] = fuelForLeg
+        }
+
+        //not important now just to calculate distance and duration and display them.
         totalDistanceInMeters = 0
         totalDurationInSeconds = 0
         
@@ -144,27 +210,21 @@ class ViewController: UIViewController {
         self.bufferDuration = totalDurationInSeconds
         let distanceInKilometers: Double = Double(totalDistanceInMeters / 1000)
         totalDistance = "Total Distance: \(distanceInKilometers) Km"
-
         let mins = totalDurationInSeconds / 60
         let hours = mins / 60
         let days = hours / 24
         let remainingHours = hours % 24
         let remainingMins = mins % 60
         let remainingSecs = totalDurationInSeconds % 60
-        
-       
-        
-        
         totalDuration = "Duration: \(days) d, \(remainingHours) h, \(remainingMins) mins, \(remainingSecs) secs"
         distance.text = totalDistance
         duration.text = totalDuration
         print(totalDuration)
         print(totalDistance)
         self.displayDuration = "\(self.displayDuration)" + "Route \(self.displayRoute) \(totalDistance) \(totalDuration) \n"
-        print("*")
-        print("\(self.displayDuration)")
-    }
 
+    }
+    
     func configureMapAndMarkersForRoute() {
         mapView1.clear()
         mapView1.camera = GMSCameraPosition.cameraWithTarget(self.originCoordinate, zoom: 9.0)
@@ -174,8 +234,7 @@ class ViewController: UIViewController {
         originMarker.title = self.originAddress
         originMarker.snippet = "hi"
         originMarker.infoWindowAnchor = CGPoint(x: 2, y:2)
-        
-       // mapView1.selectedMarker = originMarker
+        // mapView1.selectedMarker = originMarker
         
         destinationMarker = GMSMarker(position: self.destinationCoordinate)
         destinationMarker.map = self.mapView1
@@ -204,7 +263,7 @@ class ViewController: UIViewController {
         routePolyline.strokeWidth = 2
         routePolyline.map = mapView1
     }
-
+    
 }
 
 extension ViewController: CLLocationManagerDelegate {
@@ -235,4 +294,3 @@ extension ViewController: CLLocationManagerDelegate {
         
     }
 }
-
