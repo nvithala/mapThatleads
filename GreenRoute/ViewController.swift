@@ -47,6 +47,7 @@ class ViewController: UIViewController {
     var minFuelOverall:Double = 1000000000000000
     var routeWithMinFuelNo:UInt = 0
     var routeWithMinDuration:UInt = 0
+    var arrayOfPoints: Array<String> = []
     
     
     //markers
@@ -78,6 +79,7 @@ class ViewController: UIViewController {
         self.bufferDuration = 0
         self.dict = [:]
         self.finalDict = []
+        self.arrayOfPoints = []
         
         self.displayRoute = 0
         self.displayDuration = ""
@@ -103,10 +105,8 @@ class ViewController: UIViewController {
         dataDict[75] = 0.05
         dataDict[80] = 0.079
         
-        print(dataDict)
-        
+        //MARK: desrialize the json response here. Mark the route with minimum duration
         dispatch_async(dispatch_get_main_queue(),{ () -> Void in
-            
             print("start dispatching")
             // to deserialize the data.
             do {
@@ -120,7 +120,7 @@ class ViewController: UIViewController {
                             self.notSelectedRoute = (dictionary["routes"] as! Array<Dictionary<NSObject, AnyObject>>)
                             
                             for item in self.notSelectedRoute {
-                                self.displayRoute = self.displayRoute+1
+                                print("ROUTE:\(self.displayRoute)")
                                 self.overviewPolyline = item["overview_polyline"] as! Dictionary<NSObject, AnyObject>
                                 //print(self.overviewPolyline)
                                 var legs = item["legs"] as! Array<Dictionary<NSObject, AnyObject>>
@@ -138,16 +138,15 @@ class ViewController: UIViewController {
                                 self.calculateTotalDistanceAndDuration(item)
                                 
                                 if(self.bufferDuration < self.minDuration) {
+                                    print(self.bufferDuration)
+                                    print(self.minDuration)
                                     self.minDuration = self.bufferDuration
                                     self.routeWithMinDuration = self.displayRoute
                                 }
-                                //self.dict[self.bufferDuration] = self.overviewPolyline
                                 var tempdict = ["route":self.bufferDuration,"polyline":self.overviewPolyline]
                                 self.finalDict.append(tempdict as! Dictionary<NSObject, AnyObject>)
+                                self.displayRoute = self.displayRoute+1
                             }
-                            print("final dict \(self.finalDict)")
-                            //let k = self.finalDict[0]["route"] as! UInt
-                            //print(k)
                             self.configureMapAndMarkersForRoute()
                             self.drawRoute()
                         }
@@ -190,9 +189,10 @@ class ViewController: UIViewController {
             distanceLeg += distanceMiles
             let gallons = minVal*distanceMiles
             fuelForLeg += gallons
-            //print("GALLONS\(gallons)")
+            
             
         }
+        print("GALLONS\(fuelForLeg)")
         print("distance\(distanceLeg)")
         return fuelForLeg
     }
@@ -218,7 +218,6 @@ class ViewController: UIViewController {
             totalDistanceInMeters += (step["distance"] as! Dictionary<NSObject, AnyObject>)["value"] as! UInt
             totalDurationInSeconds += (step["duration"] as! Dictionary<NSObject, AnyObject>)["value"] as! UInt
         }
-        
         self.bufferDuration = totalDurationInSeconds
         let distanceInKilometers: Double = Double(totalDistanceInMeters / 1000)
         totalDistance = "Total Distance: \(distanceInKilometers) Km"
@@ -234,7 +233,6 @@ class ViewController: UIViewController {
         print(totalDuration)
         print(totalDistance)
         self.displayDuration = "\(self.displayDuration)" + "Route \(self.displayRoute) \(totalDistance) \(totalDuration) \n"
-        
     }
     
     func configureMapAndMarkersForRoute() {
@@ -246,7 +244,6 @@ class ViewController: UIViewController {
         originMarker.title = self.originAddress
         originMarker.snippet = "hi"
         originMarker.infoWindowAnchor = CGPoint(x: 2, y:2)
-        // mapView1.selectedMarker = originMarker
         
         destinationMarker = GMSMarker(position: self.destinationCoordinate)
         destinationMarker.map = self.mapView1
@@ -256,45 +253,43 @@ class ViewController: UIViewController {
     
     func drawRoute() {
         for step in finalDict {
-            print("STEP\(step)")
             var poly = step["polyline"] as! Dictionary<String,AnyObject>
             var points = poly["points"] as! String
-            print("poly\(points)")
+            self.arrayOfPoints.append(points)
+        }
+        compareAndDraw()
+    }
+    
+    //MARK: drawing routes based on fuel vs duration factor
+    func compareAndDraw(){
+        print(self.routeWithMinDuration)
+        print(self.routeWithMinFuelNo)
+        if(self.routeWithMinDuration == self.routeWithMinFuelNo){
+            print("same")
+            var points = self.arrayOfPoints[Int(self.routeWithMinFuelNo)]
             let path: GMSPath = GMSPath(fromEncodedPath: points)!
             routePolyline = GMSPolyline(path: path)
-            routePolyline.strokeColor = UIColor.grayColor()
+            routePolyline.strokeColor = UIColor.greenColor()
             routePolyline.strokeWidth = 2
             routePolyline.map = mapView1
+        } else {
+            var googlePoints = self.arrayOfPoints[Int(self.routeWithMinDuration)]
+            print(googlePoints)
+            var path: GMSPath = GMSPath(fromEncodedPath: googlePoints)!
+            routePolyline = GMSPolyline(path: path)
+            routePolyline.strokeColor = UIColor.blueColor()
+            routePolyline.strokeWidth = 2
+            routePolyline.map = mapView1
+            
+            var greenRoute = self.arrayOfPoints[Int(self.routeWithMinFuelNo)]
+            print(greenRoute)
+            var path2 = GMSPath(fromEncodedPath: greenRoute)!
+            routePolyline = GMSPolyline(path: path2)
+            routePolyline.strokeColor = UIColor.greenColor()
+            routePolyline.strokeWidth = 2
+            routePolyline.map = mapView1
+
         }
-        //if(self.routeWithMinDuration == self.routeWithMinFuelNo){
-//            var points = polyline["points"] as! String
- //       print("polyline\(points)")
-//        let path: GMSPath = GMSPath(fromEncodedPath: points)!
-//                        routePolyline = GMSPolyline(path: path)
-//                        routePolyline.strokeColor = UIColor.grayColor()
-//                        routePolyline.strokeWidth = 2
-//                        routePolyline.map = mapView1
-                //}
-    
-//        for(key,val) in dict {
-//            if(key != self.minDuration){
-//                let r = dict[key]
-//                let s = r!["points"] as! String
-//                let path: GMSPath = GMSPath(fromEncodedPath: s)!
-//                routePolyline = GMSPolyline(path: path)
-//                routePolyline.strokeColor = UIColor.grayColor()
-//                routePolyline.strokeWidth = 2
-//                routePolyline.map = mapView1
-//                
-//            }
-//        }
-//        let u = dict[self.minDuration]
-//        let v = u!["points"] as! String
-//        let w:GMSPath = GMSPath(fromEncodedPath: v)!
-//        routePolyline = GMSPolyline(path: w)
-//        routePolyline.strokeColor = UIColor.greenColor()
-//        routePolyline.strokeWidth = 2
-//        routePolyline.map = mapView1
     }
     
 }
