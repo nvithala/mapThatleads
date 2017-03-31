@@ -19,7 +19,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var mapView1: GMSMapView!
     
-    let baseURLDirections = "https://maps.googleapis.com/maps/api/directions/json?"
+    let baseURLDirections:String = "https://maps.googleapis.com/maps/api/directions/json?"
     var selectedRoute: Dictionary<NSObject,AnyObject>!
     var notSelectedRoute: Array<Dictionary<NSObject, AnyObject>> = []
     var overviewPolyline: Dictionary<NSObject,AnyObject>!
@@ -72,12 +72,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
-        print("Loaded camera")
+        //print("Loaded camera")
     }
     
     @IBAction func parseAndGet(sender: AnyObject) {
         view.endEditing(true)
-        let timeInterval = NSDate().timeIntervalSince1970
+        let timeInterval = String(NSDate().timeIntervalSince1970)
         let camera: GMSCameraPosition = GMSCameraPosition.cameraWithLatitude(48.857165, longitude: 2.354613, zoom: 1.0)
         mapView1.camera = camera
         let sourceStr: String = origin.text!
@@ -95,7 +95,7 @@ class ViewController: UIViewController {
         self.displayRoute = 0
         self.displayDuration = ""
         self.routeWithMinFuelNo = 0
-        var directionsURl = baseURLDirections+"origin="+sourceStr+"&destination="+destinationStr+"&alternatives=true"
+        var directionsURl = baseURLDirections+"origin="+sourceStr+"&destination="+destinationStr+"&alternatives=true"+"&departure_time"+"1490993519000"
         directionsURl = directionsURl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
         let finalURL = NSURL(string: directionsURl)
         let directionsData = NSData(contentsOfURL: finalURL!)
@@ -134,7 +134,6 @@ class ViewController: UIViewController {
                             for item in self.notSelectedRoute {
                                 print("ROUTE:\(self.displayRoute)")
                                 self.overviewPolyline = item["overview_polyline"] as! Dictionary<NSObject, AnyObject>
-                                //print(self.overviewPolyline)
                                 var legs = item["legs"] as! Array<Dictionary<NSObject, AnyObject>>
                                 
                                 let startLoc = legs[0]["start_location"] as! Dictionary<NSObject, AnyObject>
@@ -150,8 +149,6 @@ class ViewController: UIViewController {
                                 self.calculateTotalDistanceAndDuration(item)
                                 
                                 if(self.bufferDuration < self.minDuration) {
-                                    print(self.bufferDuration)
-                                    print(self.minDuration)
                                     self.minDuration = self.bufferDuration
                                     self.routeWithMinDuration = self.displayRoute
                                 }
@@ -179,11 +176,13 @@ class ViewController: UIViewController {
         return k
     }
     
+    //MARK: calculate fuel for each leg in route
     func calFuel(dum:Array<Dictionary<NSObject, AnyObject>>) -> Double{
         let steps = dum as NSArray
-        let temp = steps[4] as! Dictionary<NSObject,AnyObject>
+        let noOFSteps = steps.count
+        let mid = Int(noOFSteps/2)
+        let temp = steps[mid] as! Dictionary<NSObject,AnyObject>
         let temp1 = temp["start_location"] as! Dictionary<NSObject,AnyObject>
-        //print(temp1)
         self.dicForCustomMarkers.append(temp1)
         var fuelForLeg = 0.0
         var distanceLeg = 0.0
@@ -200,7 +199,6 @@ class ViewController: UIViewController {
             fuelForLeg += gallons
         }
         print("GALLONS\(fuelForLeg)")
-        print("distance\(distanceLeg)")
         return fuelForLeg
     }
     
@@ -212,9 +210,6 @@ class ViewController: UIViewController {
             var fuelForLeg = calFuel(steps)
             if(fuelForLeg < self.minFuelOverall){
                 minFuelOverall = fuelForLeg
-                print(minFuelOverall)
-                print(routeWithMinFuelNo)
-                print(displayRoute)
                 self.routeWithMinFuelNo = self.displayRoute
             }
             self.routeDict[displayRoute] = fuelForLeg
@@ -245,6 +240,7 @@ class ViewController: UIViewController {
         self.displayDuration = "\(self.displayDuration)" + "Route \(self.displayRoute) \(totalDistance) \(totalDuration) \n"
     }
     
+    //MARK: configuring markers for routes
     func configureMapAndMarkersForRoute() {
         mapView1.clear()
         mapView1.camera = GMSCameraPosition.cameraWithTarget(self.originCoordinate, zoom: 9.0)
@@ -252,35 +248,38 @@ class ViewController: UIViewController {
         originMarker.map = self.mapView1
         originMarker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
         originMarker.title = self.originAddress
-        //originMarker.snippet = "hi"
-        originMarker.infoWindowAnchor = CGPoint(x: 2, y:2)
         
         destinationMarker = GMSMarker(position: self.destinationCoordinate)
         destinationMarker.map = self.mapView1
         destinationMarker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
         destinationMarker.title = self.destinationAddress
-        destinationMarker.snippet = "welcome"
         
+        //MARK:fuel calculations
         let fuel1 = self.routeDict[self.routeWithMinDuration] as Double!
         let fuel2 = self.routeDict[self.routeWithMinFuelNo] as Double!
         self.differenceFuel = fuel1-fuel2
         self.percentDiffFuel = (self.differenceFuel/fuel1)*100
         self.fuelSaved = self.differenceFuel*2.50
         self.savingCO2 = self.differenceFuel*19.64
-        print(differenceFuel)
-        print(fuelSaved)
-        print(savingCO2)
+
         let a = self.finalDisplayString as String
         let b = String(self.fuelSaved)
         let c = String(self.savingCO2)
-        self.finalDisplayString = "diff"+a+"fsaved:"+b+"co2"+c
-        var customMarker = self.dicForCustomMarkers[Int(self.routeWithMinFuelNo)]
-        var start_point = CLLocationCoordinate2DMake(customMarker["lat"] as! Double, customMarker["lng"] as! Double)
-        print("start point\(start_point)")
-        fuelMarker = GMSMarker(position: start_point)
-        fuelMarker.map = self.mapView1
-        fuelMarker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
-        fuelMarker.snippet = self.finalDisplayString
+        
+        self.finalDisplayString = "Diff in fuel"+a+",$ Saved:"+b+" ,Reduction in CO2 emissions:"+c
+        
+        //MARK: displaying custom marker with calculations
+        if(self.routeWithMinDuration != self.routeWithMinFuelNo){
+            var customMarker = self.dicForCustomMarkers[Int(self.routeWithMinFuelNo)]
+            var start_point = CLLocationCoordinate2DMake(customMarker["lat"] as! Double, customMarker["lng"] as! Double)
+            //print("start point\(start_point)")
+            fuelMarker = GMSMarker(position: start_point)
+            fuelMarker.map = self.mapView1
+            fuelMarker.icon = UIImage(named: "smaller.jpeg")
+            fuelMarker.snippet = self.finalDisplayString
+            fuelMarker.title = "Fuel Efficient route!"
+        }
+        
      }
     
     func drawRoute() {
@@ -291,15 +290,7 @@ class ViewController: UIViewController {
         }
         compareAndDraw()
     }
-//    
-//    func imageWithImage(image:UIImage, scaledToSize newSize:CGSize) -> UIImage{
-//        UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0);
-//        image.drawInRect(CGRectMake(0, 0, newSize.width, newSize.height))
-//        let newImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()
-//        UIGraphicsEndImageContext()
-//        return newImage
-//    }
-//    
+ 
     //MARK: drawing routes based on fuel vs duration factor
     func compareAndDraw(){
         if(self.routeWithMinDuration == self.routeWithMinFuelNo){
