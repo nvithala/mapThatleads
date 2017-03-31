@@ -35,9 +35,11 @@ class ViewController: UIViewController {
     var minDuration:UInt = UInt.max
     var bufferDuration:UInt = 0
     var dataDict:[Double:Double] = [:]
+    var dataDictTraffic:[Double:Double] = [:]
     var routeDict:[UInt:Double] = [:]
     var totalFuel:Double = 0
     var finalDict:Array<Dictionary<NSObject, AnyObject>> = []
+    
     
     
     // in testing
@@ -48,6 +50,7 @@ class ViewController: UIViewController {
     var routeWithMinFuelNo:UInt = 0
     var routeWithMinDuration:UInt = 0
     var arrayOfPoints: Array<String> = []
+    var dicForCustomMarkers: Array<Dictionary<NSObject,AnyObject>> = []
     
     
     //markers
@@ -67,7 +70,7 @@ class ViewController: UIViewController {
     
     @IBAction func parseAndGet(sender: AnyObject) {
         view.endEditing(true)
-        
+        let timeInterval = NSDate().timeIntervalSince1970
         let camera: GMSCameraPosition = GMSCameraPosition.cameraWithLatitude(48.857165, longitude: 2.354613, zoom: 1.0)
         mapView1.camera = camera
         let sourceStr: String = origin.text!
@@ -79,31 +82,32 @@ class ViewController: UIViewController {
         self.bufferDuration = 0
         self.dict = [:]
         self.finalDict = []
+        self.routeDict = [:]
         self.arrayOfPoints = []
-        
+        self.minFuelOverall = 1000000000000000
         self.displayRoute = 0
         self.displayDuration = ""
+        self.routeWithMinFuelNo = 0
         var directionsURl = baseURLDirections+"origin="+sourceStr+"&destination="+destinationStr+"&alternatives=true"
         directionsURl = directionsURl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
         let finalURL = NSURL(string: directionsURl)
         let directionsData = NSData(contentsOfURL: finalURL!)
         
-        dataDict[8] = 0.07
-        dataDict[16] = 0.065
-        dataDict[18] = 0.065
-        dataDict[20] = 0.06
-        dataDict[25] = 0.05
-        dataDict[30] = 0.046
-        dataDict[35] = 0.043
-        dataDict[40] = 0.041
-        dataDict[45] = 0.04
-        dataDict[50] = 0.038
-        dataDict[55] = 0.036
-        dataDict[60] = 0.0385
-        dataDict[65] = 0.04
-        dataDict[70] = 0.042
-        dataDict[75] = 0.05
-        dataDict[80] = 0.079
+        dataDict[7] = 0.0689655172413793
+        dataDict[16.0625] = 0.0689655172413793
+        dataDict[19] = 0.0526315789473684
+        dataDict[27.8125] = 0.0510204081632653
+        dataDict[38] = 0.0446428571428571
+        dataDict[48.4] = 0.0354609929078014
+        dataDict[60] = 0.0354609929078014
+        dataDict[80] = 0.0571755288736421
+        
+        dataDictTraffic[10.34] = 0.0967117988394584
+        dataDictTraffic[11.2] = 0.0892857142857143
+        dataDictTraffic[19.2] = 0.0520833333333333
+        dataDictTraffic[19.8] = 0.0505050505050505
+        
+
         
         //MARK: desrialize the json response here. Mark the route with minimum duration
         dispatch_async(dispatch_get_main_queue(),{ () -> Void in
@@ -161,36 +165,31 @@ class ViewController: UIViewController {
         
     }
     
+    func nextHighest(n: Double) -> Double? {
+        let higher:Array<Double> = dataDict.keys.filter{$0 >= n}
+        let k = higher.isEmpty ? nil : dataDict[higher.minElement()!]
+        return k
+    }
+    
     func calFuel(dum:Array<Dictionary<NSObject, AnyObject>>) -> Double{
         let steps = dum as NSArray
+        let temp = steps[2] as! Dictionary<NSObject,AnyObject>
+        let temp1 = temp["start_location"] as! Dictionary<NSObject,AnyObject>
+        //print(temp1)
+        self.dicForCustomMarkers.append(temp1)
         var fuelForLeg = 0.0
         var distanceLeg = 0.0
+        var minKey:UInt = 0
         for step in steps {
             let distanceMetres = (step["distance"] as! Dictionary<NSObject, AnyObject>)["value"] as! Double
             let durationSeconds = (step["duration"] as! Dictionary<NSObject, AnyObject>)["value"] as! Double
             let distanceMiles = distanceMetres * 0.000621371
             let durationHours = durationSeconds / 3600
             let speed = distanceMiles / durationHours
-            var minVal = 0.0
-            for (key,value) in dataDict {
-                if(key == speed){
-                    minVal = value
-                    break;
-                } else {
-                    if(minVal == 0.0){
-                        minVal = value
-                    } else {
-                        if(key>speed && key<minVal){
-                            minVal = value
-                        }
-                    }
-                }
-            }
+            let minMiles = nextHighest(speed)
             distanceLeg += distanceMiles
-            let gallons = minVal*distanceMiles
+            let gallons = minMiles!*distanceMiles
             fuelForLeg += gallons
-            
-            
         }
         print("GALLONS\(fuelForLeg)")
         print("distance\(distanceLeg)")
@@ -205,6 +204,9 @@ class ViewController: UIViewController {
             var fuelForLeg = calFuel(steps)
             if(fuelForLeg < self.minFuelOverall){
                 minFuelOverall = fuelForLeg
+                print(minFuelOverall)
+                print(routeWithMinFuelNo)
+                print(displayRoute)
                 self.routeWithMinFuelNo = self.displayRoute
             }
             self.routeDict[displayRoute] = fuelForLeg
@@ -242,7 +244,7 @@ class ViewController: UIViewController {
         originMarker.map = self.mapView1
         originMarker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
         originMarker.title = self.originAddress
-        originMarker.snippet = "hi"
+        //originMarker.snippet = "hi"
         originMarker.infoWindowAnchor = CGPoint(x: 2, y:2)
         
         destinationMarker = GMSMarker(position: self.destinationCoordinate)
@@ -262,8 +264,8 @@ class ViewController: UIViewController {
     
     //MARK: drawing routes based on fuel vs duration factor
     func compareAndDraw(){
-        print(self.routeWithMinDuration)
-        print(self.routeWithMinFuelNo)
+        //print(self.routeWithMinDuration)
+        //print(self.routeWithMinFuelNo)
         if(self.routeWithMinDuration == self.routeWithMinFuelNo){
             print("same")
             var points = self.arrayOfPoints[Int(self.routeWithMinFuelNo)]
@@ -274,7 +276,6 @@ class ViewController: UIViewController {
             routePolyline.map = mapView1
         } else {
             var googlePoints = self.arrayOfPoints[Int(self.routeWithMinDuration)]
-            print(googlePoints)
             var path: GMSPath = GMSPath(fromEncodedPath: googlePoints)!
             routePolyline = GMSPolyline(path: path)
             routePolyline.strokeColor = UIColor.blueColor()
@@ -282,13 +283,20 @@ class ViewController: UIViewController {
             routePolyline.map = mapView1
             
             var greenRoute = self.arrayOfPoints[Int(self.routeWithMinFuelNo)]
-            print(greenRoute)
             var path2 = GMSPath(fromEncodedPath: greenRoute)!
             routePolyline = GMSPolyline(path: path2)
             routePolyline.strokeColor = UIColor.greenColor()
             routePolyline.strokeWidth = 2
             routePolyline.map = mapView1
-
+            
+            var customMarker = self.dicForCustomMarkers[Int(self.routeWithMinFuelNo)]
+            var start_point = CLLocationCoordinate2DMake(customMarker["lat"] as! Double, customMarker["lng"] as! Double)
+            var minMarker = GMSMarker(position: start_point)
+            minMarker.map = self.mapView1
+            minMarker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
+            //originMarker.title = self.originAddress
+            minMarker.snippet = "hi"
+            //minMarker.infoWindowAnchor = CGPoint(x: 2, y:2)
         }
     }
     

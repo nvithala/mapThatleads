@@ -29,6 +29,8 @@
 		5E85B48A1E802BC800E7E8D2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E85B4891E802BC800E7E8D2 /* UIKit.framework */; };
 		5E85B48C1E802BD000E7E8D2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E85B48B1E802BD000E7E8D2 /* CoreGraphics.framework */; };
 		5E85B48E1E802BD800E7E8D2 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E85B48D1E802BD800E7E8D2 /* Accelerate.framework */; };
+		5E88BA731E8D94F400C3B0D5 /* speed.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5E88BA721E8D94F400C3B0D5 /* speed.plist */; };
+		5E88BA771E8DB58700C3B0D5 /* icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E88BA761E8DB58700C3B0D5 /* icon.jpg */; };
 		A8F2AEE21E89A901006C942B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8F2AEE11E89A901006C942B /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +59,8 @@
 		5E85B4891E802BC800E7E8D2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5E85B48B1E802BD000E7E8D2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		5E85B48D1E802BD800E7E8D2 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		5E88BA721E8D94F400C3B0D5 /* speed.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = speed.plist; sourceTree = "<group>"; };
+		5E88BA761E8DB58700C3B0D5 /* icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = icon.jpg; path = ../icon.jpg; sourceTree = "<group>"; };
 		A8F2AEE11E89A901006C942B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,6 +95,7 @@
 		5E85B44D1E8020CE00E7E8D2 = {
 			isa = PBXGroup;
 			children = (
+				5E88BA721E8D94F400C3B0D5 /* speed.plist */,
 				5E85B48D1E802BD800E7E8D2 /* Accelerate.framework */,
 				5E85B48B1E802BD000E7E8D2 /* CoreGraphics.framework */,
 				5E85B4891E802BC800E7E8D2 /* UIKit.framework */,
@@ -122,6 +127,7 @@
 		5E85B4581E8020CE00E7E8D2 /* GreenRoute */ = {
 			isa = PBXGroup;
 			children = (
+				5E88BA761E8DB58700C3B0D5 /* icon.jpg */,
 				5E85B4711E80275A00E7E8D2 /* GoogleMapsBase.framework */,
 				5E85B46F1E80274100E7E8D2 /* GoogleMapsCore.framework */,
 				5E85B46D1E80271A00E7E8D2 /* GoogleMaps.framework */,
@@ -197,6 +203,8 @@
 				5E85B4641E8020CE00E7E8D2 /* LaunchScreen.storyboard in Resources */,
 				5E85B45F1E8020CE00E7E8D2 /* Main.storyboard in Resources */,
 				A8F2AEE21E89A901006C942B /* Assets.xcassets in Resources */,
+				5E88BA731E8D94F400C3B0D5 /* speed.plist in Resources */,
+				5E88BA771E8DB58700C3B0D5 /* icon.jpg in Resources */,
 				5E85B46C1E80271100E7E8D2 /* GoogleMaps.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
