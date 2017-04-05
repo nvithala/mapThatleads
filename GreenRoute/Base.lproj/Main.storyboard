@@ -73,11 +73,14 @@
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YXA-cd-EWy">
                                         <rect key="frame" x="216" y="84" width="169" height="30"/>
+                                        <color key="backgroundColor" red="0.29648937392094232" green="0.59174326533797927" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="169" id="Io2-Ew-JV0"/>
                                             <constraint firstAttribute="height" constant="30" id="pnF-3D-3y7"/>
                                         </constraints>
-                                        <state key="normal" title="Get Directions"/>
+                                        <state key="normal" title="Get Directions">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
                                         <connections>
                                             <action selector="parseAndGet:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZFF-5M-BCc"/>
                                         </connections>

@@ -39,9 +39,7 @@ class ViewController: UIViewController {
     var routeDict:[UInt:Double] = [:]
     var totalFuel:Double = 0
     var finalDict:Array<Dictionary<NSObject, AnyObject>> = []
-    
-    
-    
+
     // in testing
     var displayDuration:String = ""
     var displayDistance:String = ""
@@ -56,6 +54,7 @@ class ViewController: UIViewController {
     var savingCO2 = 0.0
     var fuelSaved = 0.0
     var finalDisplayString:String = ""
+    var fasterBy:String = ""
     
     
     //markers
@@ -63,6 +62,7 @@ class ViewController: UIViewController {
     var destinationMarker: GMSMarker!
     var routePolyline: GMSPolyline!
     var fuelMarker: GMSMarker!
+    var speedMarker: GMSMarker!
     
     
     //manage locations
@@ -72,7 +72,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
-        //print("Loaded camera")
     }
     
     @IBAction func parseAndGet(sender: AnyObject) {
@@ -95,11 +94,13 @@ class ViewController: UIViewController {
         self.displayRoute = 0
         self.displayDuration = ""
         self.routeWithMinFuelNo = 0
+        self.routeWithMinDuration = 0
         var directionsURl = baseURLDirections+"origin="+sourceStr+"&destination="+destinationStr+"&alternatives=true"+"&departure_time"+"1490993519000"
         directionsURl = directionsURl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
         let finalURL = NSURL(string: directionsURl)
         let directionsData = NSData(contentsOfURL: finalURL!)
         self.finalDisplayString = ""
+        self.fasterBy = ""
         
         dataDict[7] = 0.0689655172413793
         dataDict[16.0625] = 0.0689655172413793
@@ -176,12 +177,17 @@ class ViewController: UIViewController {
         return k
     }
     
+    func clearMarkers(){
+        
+    }
+    
     //MARK: calculate fuel for each leg in route
     func calFuel(dum:Array<Dictionary<NSObject, AnyObject>>) -> Double{
         let steps = dum as NSArray
         let noOFSteps = steps.count
         let mid = Int(noOFSteps/2)
         let temp = steps[mid] as! Dictionary<NSObject,AnyObject>
+        print(temp)
         let temp1 = temp["start_location"] as! Dictionary<NSObject,AnyObject>
         self.dicForCustomMarkers.append(temp1)
         var fuelForLeg = 0.0
@@ -243,6 +249,11 @@ class ViewController: UIViewController {
     //MARK: configuring markers for routes
     func configureMapAndMarkersForRoute() {
         mapView1.clear()
+        fuelMarker = nil
+        speedMarker = nil
+        originMarker = nil
+        destinationMarker = nil
+        self.fasterBy = ""
         mapView1.camera = GMSCameraPosition.cameraWithTarget(self.originCoordinate, zoom: 9.0)
         originMarker = GMSMarker(position: self.originCoordinate)
         originMarker.map = self.mapView1
@@ -254,6 +265,18 @@ class ViewController: UIViewController {
         destinationMarker.icon = GMSMarker.markerImageWithColor(UIColor.redColor())
         destinationMarker.title = self.destinationAddress
         
+        //MARK: for speed comparisions
+        let x = self.finalDict[Int(self.routeWithMinDuration)] as Dictionary<NSObject,AnyObject>
+        let y = x["route"] as! Int
+        print(y)
+        let z = self.finalDict[Int(self.routeWithMinFuelNo)] as Dictionary<NSObject,AnyObject>
+        let w = z["route"] as! Int
+        print(w)
+        let diff = w-y
+        print(diff)
+        self.fasterBy = "This route is faster by"+String(diff/60)+"mins"
+        print(self.fasterBy)
+        
         //MARK:fuel calculations
         let fuel1 = self.routeDict[self.routeWithMinDuration] as Double!
         let fuel2 = self.routeDict[self.routeWithMinFuelNo] as Double!
@@ -262,22 +285,42 @@ class ViewController: UIViewController {
         self.fuelSaved = self.differenceFuel*2.50
         self.savingCO2 = self.differenceFuel*19.64
 
-        let a = self.finalDisplayString as String
-        let b = String(self.fuelSaved)
-        let c = String(self.savingCO2)
+        let a = String(format: "%.2f", self.differenceFuel)
+        let b = String(format: "%.2f", self.fuelSaved)
+        let c = String(format: "%.2f", self.savingCO2)
         
-        self.finalDisplayString = "Diff in fuel"+a+",$ Saved:"+b+" ,Reduction in CO2 emissions:"+c
+        self.finalDisplayString = "Diff in fuel:"+a+"gallons,\n $ Saved:"+b+"$,\n Reduction in CO2 emissions:"+c+"lbs"
         
         //MARK: displaying custom marker with calculations
         if(self.routeWithMinDuration != self.routeWithMinFuelNo){
             var customMarker = self.dicForCustomMarkers[Int(self.routeWithMinFuelNo)]
             var start_point = CLLocationCoordinate2DMake(customMarker["lat"] as! Double, customMarker["lng"] as! Double)
-            //print("start point\(start_point)")
             fuelMarker = GMSMarker(position: start_point)
             fuelMarker.map = self.mapView1
             fuelMarker.icon = UIImage(named: "smaller.jpeg")
             fuelMarker.snippet = self.finalDisplayString
             fuelMarker.title = "Fuel Efficient route!"
+            mapView1.selectedMarker=fuelMarker
+            
+            // speed marker
+//            var customMarker1 = self.dicForCustomMarkers[Int(self.routeWithMinDuration)]
+//            var start_point1 = CLLocationCoordinate2DMake(customMarker1["lat"] as! Double, customMarker1["lng"] as! Double)
+//            speedMarker = GMSMarker(position: start_point1)
+//            speedMarker.map = self.mapView1
+//            speedMarker.icon = GMSMarker.markerImageWithColor(UIColor.blueColor())
+//            speedMarker.snippet = self.fasterBy
+//            speedMarker.title = "Fastest route!"
+//            //mapView1.selectedMarker=speedMarker
+        } else {
+            var speedMarker = self.dicForCustomMarkers[Int(self.routeWithMinFuelNo)]
+            var start_point = CLLocationCoordinate2DMake(speedMarker["lat"] as! Double, speedMarker["lng"] as! Double)
+            fuelMarker = GMSMarker(position: start_point)
+            fuelMarker.map = self.mapView1
+            fuelMarker.icon = UIImage(named: "smallestcar.jpeg")
+            fuelMarker.snippet = "Faster route is also the most fuel efficient route!"
+            fuelMarker.title = "Faster Route!"
+            mapView1.selectedMarker=fuelMarker
+            
         }
         
      }
@@ -294,12 +337,11 @@ class ViewController: UIViewController {
     //MARK: drawing routes based on fuel vs duration factor
     func compareAndDraw(){
         if(self.routeWithMinDuration == self.routeWithMinFuelNo){
-            print("same")
             var points = self.arrayOfPoints[Int(self.routeWithMinFuelNo)]
             let path: GMSPath = GMSPath(fromEncodedPath: points)!
             routePolyline = GMSPolyline(path: path)
-            routePolyline.strokeColor = UIColor.greenColor()
-            routePolyline.strokeWidth = 2
+            routePolyline.strokeColor = UIColor.blueColor()
+            routePolyline.strokeWidth = 5
             routePolyline.map = mapView1
         } else {
             //MARK: calculating difference in fuel and efficiencies.
@@ -308,14 +350,14 @@ class ViewController: UIViewController {
             let path: GMSPath = GMSPath(fromEncodedPath: googlePoints)!
             routePolyline = GMSPolyline(path: path)
             routePolyline.strokeColor = UIColor.blueColor()
-            routePolyline.strokeWidth = 2
+            routePolyline.strokeWidth = 5
             routePolyline.map = mapView1
             
             var greenRoute = self.arrayOfPoints[Int(self.routeWithMinFuelNo)]
             var path2 = GMSPath(fromEncodedPath: greenRoute)!
             routePolyline = GMSPolyline(path: path2)
             routePolyline.strokeColor = UIColor.greenColor()
-            routePolyline.strokeWidth = 2
+            routePolyline.strokeWidth = 5
             routePolyline.map = mapView1
         }
     }
