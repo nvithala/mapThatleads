@@ -37,6 +37,12 @@
 		5E88BA791E8EEDE400C3B0D5 /* small.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 5E88BA781E8EEDE400C3B0D5 /* small.jpeg */; };
 		5E88BA7B1E8EEFDB00C3B0D5 /* smaller.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 5E88BA7A1E8EEFDB00C3B0D5 /* smaller.jpeg */; };
 		5E88BA7D1E8EFBFC00C3B0D5 /* ios in Resources */ = {isa = PBXBuildFile; fileRef = 5E88BA7C1E8EFBFC00C3B0D5 /* ios */; };
+		5E99A7BE1E9498140020CE66 /* Greenroute_icon new.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E99A7BD1E9498140020CE66 /* Greenroute_icon new.jpg */; };
+		5E99A7C01E94982A0020CE66 /* lemon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E99A7BF1E94982A0020CE66 /* lemon.jpg */; };
+		5EED85771E956E0800D6F2F5 /* GooglePlaces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EED85761E956E0800D6F2F5 /* GooglePlaces.framework */; };
+		5EED85791E956E1C00D6F2F5 /* GooglePlacePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EED85781E956E1C00D6F2F5 /* GooglePlacePicker.framework */; };
+		5EED857D1E956EE600D6F2F5 /* GooglePlacePicker.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5EED857C1E956EE600D6F2F5 /* GooglePlacePicker.bundle */; };
+		5EED857F1E956F3300D6F2F5 /* GooglePlaces.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5EED857E1E956F3300D6F2F5 /* GooglePlaces.bundle */; };
 		A8F2AEE21E89A901006C942B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8F2AEE11E89A901006C942B /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +79,12 @@
 		5E88BA781E8EEDE400C3B0D5 /* small.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = small.jpeg; sourceTree = "<group>"; };
 		5E88BA7A1E8EEFDB00C3B0D5 /* smaller.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = smaller.jpeg; sourceTree = "<group>"; };
 		5E88BA7C1E8EFBFC00C3B0D5 /* ios */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ios; sourceTree = "<group>"; };
+		5E99A7BD1E9498140020CE66 /* Greenroute_icon new.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Greenroute_icon new.jpg"; sourceTree = "<group>"; };
+		5E99A7BF1E94982A0020CE66 /* lemon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lemon.jpg; sourceTree = "<group>"; };
+		5EED85761E956E0800D6F2F5 /* GooglePlaces.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlaces.framework; sourceTree = "<group>"; };
+		5EED85781E956E1C00D6F2F5 /* GooglePlacePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlacePicker.framework; sourceTree = "<group>"; };
+		5EED857C1E956EE600D6F2F5 /* GooglePlacePicker.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GooglePlacePicker.bundle; path = "../../../Downloads/GooglePlacePicker-2.2.0 2/Frameworks/GooglePlacePicker.framework/Versions/A/Resources/GooglePlacePicker.bundle"; sourceTree = "<group>"; };
+		5EED857E1E956F3300D6F2F5 /* GooglePlaces.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GooglePlaces.bundle; path = "../../../Downloads/GooglePlaces-2.2.0/Frameworks/GooglePlaces.framework/Versions/A/Resources/GooglePlaces.bundle"; sourceTree = "<group>"; };
 		A8F2AEE11E89A901006C942B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -96,7 +108,9 @@
 				5E85B4761E80278E00E7E8D2 /* CoreData.framework in Frameworks */,
 				5E85B4741E80278500E7E8D2 /* AVFoundation.framework in Frameworks */,
 				5E85B4721E80275A00E7E8D2 /* GoogleMapsBase.framework in Frameworks */,
+				5EED85771E956E0800D6F2F5 /* GooglePlaces.framework in Frameworks */,
 				5E85B46E1E80271A00E7E8D2 /* GoogleMaps.framework in Frameworks */,
+				5EED85791E956E1C00D6F2F5 /* GooglePlacePicker.framework in Frameworks */,
 				5E85B4701E80274100E7E8D2 /* GoogleMapsCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,6 +154,12 @@
 		5E85B4581E8020CE00E7E8D2 /* GreenRoute */ = {
 			isa = PBXGroup;
 			children = (
+				5EED857E1E956F3300D6F2F5 /* GooglePlaces.bundle */,
+				5EED857C1E956EE600D6F2F5 /* GooglePlacePicker.bundle */,
+				5EED85781E956E1C00D6F2F5 /* GooglePlacePicker.framework */,
+				5EED85761E956E0800D6F2F5 /* GooglePlaces.framework */,
+				5E99A7BD1E9498140020CE66 /* Greenroute_icon new.jpg */,
+				5E99A7BF1E94982A0020CE66 /* lemon.jpg */,
 				5E1130881E9445A500BFBA51 /* smallestcar.jpeg */,
 				5E1130861E94338400BFBA51 /* smallFast.jpeg */,
 				5E88BA7A1E8EEFDB00C3B0D5 /* smaller.jpeg */,
@@ -218,9 +238,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E99A7BE1E9498140020CE66 /* Greenroute_icon new.jpg in Resources */,
 				5E88BA7D1E8EFBFC00C3B0D5 /* ios in Resources */,
 				5E88BA7B1E8EEFDB00C3B0D5 /* smaller.jpeg in Resources */,
 				5E85B4641E8020CE00E7E8D2 /* LaunchScreen.storyboard in Resources */,
+				5EED857F1E956F3300D6F2F5 /* GooglePlaces.bundle in Resources */,
 				5E1130871E94338400BFBA51 /* smallFast.jpeg in Resources */,
 				5E85B45F1E8020CE00E7E8D2 /* Main.storyboard in Resources */,
 				A8F2AEE21E89A901006C942B /* Assets.xcassets in Resources */,
@@ -229,6 +251,8 @@
 				5E88BA771E8DB58700C3B0D5 /* icon.jpg in Resources */,
 				5E88BA791E8EEDE400C3B0D5 /* small.jpeg in Resources */,
 				5E85B46C1E80271100E7E8D2 /* GoogleMaps.bundle in Resources */,
+				5EED857D1E956EE600D6F2F5 /* GooglePlacePicker.bundle in Resources */,
+				5E99A7C01E94982A0020CE66 /* lemon.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,7 +381,7 @@
 		5E85B4691E8020CE00E7E8D2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-3";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-5";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -377,7 +401,7 @@
 		5E85B46A1E8020CE00E7E8D2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-3";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-5";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
