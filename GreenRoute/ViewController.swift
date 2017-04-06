@@ -43,6 +43,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     var routeDict:[UInt:Double] = [:]
     var totalFuel:Double = 0
     var finalDict:Array<Dictionary<NSObject, AnyObject>> = []
+    
+    var sourceTap: Bool = false
 
     // in testing
     var displayDuration:String = ""
@@ -80,9 +82,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let tapGesture = UITapGestureRecognizer(target:self, action:Selector("tapped:"))
-        tapGesture.numberOfTapsRequired = 2
-        origin.addGestureRecognizer(tapGesture)
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         placesClient = GMSPlacesClient.sharedClient()
@@ -97,17 +96,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         self.dicForCustomMarkers = []
     }
     
-    func tapped(sender: UITapGestureRecognizer?){
-        let autocompleteController = GMSAutocompleteViewController()
-        autocompleteController.delegate = self
-        
-        // Set a filter to return only addresses.
-        let addressFilter = GMSAutocompleteFilter()
-        addressFilter.type = .Address
-        autocompleteController.autocompleteFilter = addressFilter
-        presentViewController(autocompleteController, animated: true, completion: nil)
-    }
-    
     @IBAction func parseAndGet(sender: AnyObject) {
         view.endEditing(true)
         let camera: GMSCameraPosition = GMSCameraPosition.cameraWithLatitude(48.857165, longitude: 2.354613, zoom: 1.0)
@@ -115,7 +103,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         
         let sourceStr: String = origin.text!
         let destinationStr: String = destination.text!
-        var error: NSError?
+        let error: NSError? = nil
         
         self.clearDictionaries()
         self.minDuration = UInt.max
@@ -185,8 +173,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
                                     self.minDuration = self.bufferDuration
                                     self.routeWithMinDuration = self.displayRoute
                                 }
-                                var tempdict = ["route":self.bufferDuration,"polyline":self.overviewPolyline]
-                                self.finalDict.append(tempdict as! Dictionary<NSObject, AnyObject>)
+                                let tempdict = ["route":self.bufferDuration,"polyline":self.overviewPolyline]
+                                self.finalDict.append(tempdict as Dictionary<NSObject, AnyObject>)
                                 self.displayRoute = self.displayRoute+1
                             }
                             self.configureMapAndMarkersForRoute()
@@ -228,7 +216,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         self.dicForCustomMarkers.append(temp1)
         var fuelForLeg = 0.0
         var distanceLeg = 0.0
-        var minKey:UInt = 0
+        
         for step in steps {
             let distanceMetres = (step["distance"] as! Dictionary<NSObject, AnyObject>)["value"] as! Double
             let durationSeconds = (step["duration"] as! Dictionary<NSObject, AnyObject>)["value"] as! Double
@@ -248,7 +236,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         let legs = dum["legs"]as! NSArray
         for leg in legs {
             let steps = leg["steps"] as! Array<Dictionary<NSObject, AnyObject>>
-            var fuelForLeg = calFuel(steps)
+            let fuelForLeg = calFuel(steps)
             if(fuelForLeg < self.minFuelOverall){
                 minFuelOverall = fuelForLeg
                 self.routeWithMinFuelNo = self.displayRoute
@@ -336,7 +324,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
             
             //speed marker
             var speedMarker1 = self.dicForCustomMarkers[Int(self.routeWithMinDuration)]
-            var start_point1 = CLLocationCoordinate2DMake(speedMarker1["lat"] as! Double, speedMarker1["lng"] as! Double)
+            let start_point1 = CLLocationCoordinate2DMake(speedMarker1["lat"] as! Double, speedMarker1["lng"] as! Double)
             speedMarker = GMSMarker(position: start_point1)
             speedMarker.map = self.mapView1
             speedMarker.icon = UIImage(named: "smallestcar.jpeg")
@@ -345,7 +333,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
             
         } else {
             var speedMarker1 = self.dicForCustomMarkers[Int(self.routeWithMinFuelNo)]
-            var start_point = CLLocationCoordinate2DMake(speedMarker1["lat"] as! Double, speedMarker1["lng"] as! Double)
+            let start_point = CLLocationCoordinate2DMake(speedMarker1["lat"] as! Double, speedMarker1["lng"] as! Double)
             speedMarker = GMSMarker(position: start_point)
             speedMarker.map = self.mapView1
             speedMarker.icon = UIImage(named: "smallestcar.jpeg")
@@ -359,7 +347,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     func drawRoute() {
         for step in finalDict {
             var poly = step["polyline"] as! Dictionary<String,AnyObject>
-            var points = poly["points"] as! String
+            let points = poly["points"] as! String
             self.arrayOfPoints.append(points)
         }
         compareAndDraw()
@@ -368,7 +356,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     //MARK: drawing routes based on fuel vs duration factor
     func compareAndDraw(){
         if(self.routeWithMinDuration == self.routeWithMinFuelNo){
-            var points = self.arrayOfPoints[Int(self.routeWithMinFuelNo)]
+            let points = self.arrayOfPoints[Int(self.routeWithMinFuelNo)]
             let path: GMSPath = GMSPath(fromEncodedPath: points)!
             routePolyline = GMSPolyline(path: path)
             routePolyline.strokeColor = UIColor.blueColor()
@@ -383,7 +371,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
             routePolyline.strokeWidth = 5
             routePolyline.map = mapView1
             
-            var greenRoute = self.arrayOfPoints[Int(self.routeWithMinFuelNo)]
+            let greenRoute = self.arrayOfPoints[Int(self.routeWithMinFuelNo)]
             let path2 = GMSPath(fromEncodedPath: greenRoute)!
             routePolyline = GMSPolyline(path: path2)
             routePolyline.strokeColor = UIColor.greenColor()
@@ -404,17 +392,19 @@ extension ViewController: GMSAutocompleteViewControllerDelegate{
     }
     func viewController(viewController: GMSAutocompleteViewController, didAutocompleteWithPlace place: GMSPlace) {
         //origin.text=""
+        
         print("Place name: \(place.name)")
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
-        dispatch_async(dispatch_get_main_queue()){
-            self.origin.text = place.name
+        if self.sourceTap {
+            dispatch_async(dispatch_get_main_queue()){
+                self.origin.text = place.name
+            }
+        }else{
+            dispatch_async(dispatch_get_main_queue()){
+                self.destination.text = place.name
+            }
         }
-        
- 
-        // TODO: Add code to get address components from the selected place.
-        
-        // Close the autocomplete widget.
         dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -457,6 +447,36 @@ extension ViewController: GMSAutocompleteViewControllerDelegate{
             // 8
             locationManager.stopUpdatingLocation()
         }
+        
+    }
+    func destinationTap(sender: AnyObject) {
+        
+        self.sourceTap = false
+        
+        let autocompleteController = GMSAutocompleteViewController()
+        autocompleteController.delegate = self
+        
+        // Set a filter to return only addresses.
+        let addressFilter = GMSAutocompleteFilter()
+        addressFilter.type = .Address
+        autocompleteController.autocompleteFilter = addressFilter
+        presentViewController(autocompleteController, animated: true, completion: nil)
+        
+        
+    }
+    func sourceTap(sender: AnyObject) {
+        
+        self.sourceTap = true
+        
+        let autocompleteController = GMSAutocompleteViewController()
+        autocompleteController.delegate = self
+        
+        // Set a filter to return only addresses.
+        let addressFilter = GMSAutocompleteFilter()
+        addressFilter.type = .Address
+        autocompleteController.autocompleteFilter = addressFilter
+        presentViewController(autocompleteController, animated: true, completion: nil)
+        
         
     }
 }
