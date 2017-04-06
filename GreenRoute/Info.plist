@@ -32,6 +32,8 @@
 		<string>googlechromes</string>
 		<key>Item 1</key>
 		<string>comgooglemaps</string>
+		<key>Item2</key>
+		<string>comgoogleplaces</string>
 	</dict>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>

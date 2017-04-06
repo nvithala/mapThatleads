@@ -10,15 +10,18 @@ import UIKit
 import GoogleMaps
 import GooglePlaces
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,CLLocationManagerDelegate {
 
     @IBOutlet weak var origin: UITextField!
     @IBOutlet weak var destination: UITextField!
     @IBOutlet weak var dummy: UIButton!
     @IBOutlet weak var duration: UITextField!
     @IBOutlet weak var distance: UITextField!
-    
+    @IBOutlet weak var trial1: UITextField!
+    @IBOutlet weak var trial2: UITextField!
     @IBOutlet weak var mapView1: GMSMapView!
+    //MARK:from here
+    
     
     let baseURLDirections:String = "https://maps.googleapis.com/maps/api/directions/json?"
     var selectedRoute: Dictionary<NSObject,AnyObject>!
@@ -40,7 +43,6 @@ class ViewController: UIViewController {
     var routeDict:[UInt:Double] = [:]
     var totalFuel:Double = 0
     var finalDict:Array<Dictionary<NSObject, AnyObject>> = []
-    var helper = Helper()
 
     // in testing
     var displayDuration:String = ""
@@ -58,8 +60,6 @@ class ViewController: UIViewController {
     var finalDisplayString:String = ""
     var fasterBy:String = ""
     var placesClient: GMSPlacesClient!
-
-    
     
     //markers
     var originMarker: GMSMarker!
@@ -68,16 +68,25 @@ class ViewController: UIViewController {
     var fuelMarker: GMSMarker!
     var speedMarker: GMSMarker!
     
+    var locationManager = CLLocationManager()
+    var error:NSError!
     
-    //manage locations
-    let locationManager = CLLocationManager()
+    var didFindMyLocation = false
+    
+    var locationMarker: GMSMarker!
+    var resultsViewController: GMSAutocompleteResultsViewController?
+    var searchController: UISearchController?
+    var resultView: UITextView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let tapGesture = UITapGestureRecognizer(target:self, action:Selector("tapped:"))
+        tapGesture.numberOfTapsRequired = 2
+        origin.addGestureRecognizer(tapGesture)
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         placesClient = GMSPlacesClient.sharedClient()
-        
+
     }
     
     func clearDictionaries(){
@@ -88,38 +97,26 @@ class ViewController: UIViewController {
         self.dicForCustomMarkers = []
     }
     
+    func tapped(sender: UITapGestureRecognizer?){
+        let autocompleteController = GMSAutocompleteViewController()
+        autocompleteController.delegate = self
+        
+        // Set a filter to return only addresses.
+        let addressFilter = GMSAutocompleteFilter()
+        addressFilter.type = .Address
+        autocompleteController.autocompleteFilter = addressFilter
+        presentViewController(autocompleteController, animated: true, completion: nil)
+    }
+    
     @IBAction func parseAndGet(sender: AnyObject) {
         view.endEditing(true)
-        let timeInterval = String(NSDate().timeIntervalSince1970)
         let camera: GMSCameraPosition = GMSCameraPosition.cameraWithLatitude(48.857165, longitude: 2.354613, zoom: 1.0)
         mapView1.camera = camera
-//        placesClient.currentPlaceWithCallback({ (placeLikelihoodList, error) -> Void in
-//            if let error = error {
-//                print("Pick Place error: \(error.localizedDescription)")
-//                return
-//            }
-//            
-//            self.origin.text = "No current place"
-//           // self.addressLabel.text = ""
-//            
-//            if let placeLikelihoodList = placeLikelihoodList {
-//                let place = placeLikelihoodList.likelihoods.first?.place
-//                if let place = place {
-//                    self.origin.text = place.name
-//                    self.addressLabel.text = place.formattedAddress?.components(separatedBy: ", ")
-//                        .joined(separator: "\n")
-//                }
-//            }
-//        })
-//    }
-        
-        
-        
         
         let sourceStr: String = origin.text!
         let destinationStr: String = destination.text!
         var error: NSError?
-
+        
         self.clearDictionaries()
         self.minDuration = UInt.max
         self.bufferDuration = 0
@@ -130,8 +127,6 @@ class ViewController: UIViewController {
         self.routeWithMinDuration = 0
         self.finalDisplayString = ""
         self.fasterBy = ""
-        
-
         
         var directionsURl = baseURLDirections+"origin="+sourceStr+"&destination="+destinationStr+"&alternatives=true"+"&departure_time"+"1490993519000"
         directionsURl = directionsURl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
@@ -152,7 +147,10 @@ class ViewController: UIViewController {
         dataDictTraffic[19.2] = 0.0520833333333333
         dataDictTraffic[19.8] = 0.0505050505050505
         
-        //MARK: desrialize the json response here. Mark the route with minimum duration
+        /*
+         * Something!
+        */
+        
         dispatch_async(dispatch_get_main_queue(),{ () -> Void in
             print("start dispatching")
             // to deserialize the data.
@@ -202,9 +200,8 @@ class ViewController: UIViewController {
                 print(error)
             }
         })
-        
-    }
-    
+}
+
     func nextHighest(n: Double) -> Double? {
         let higher:Array<Double> = dataDict.keys.filter{$0 >= n}
         let k = higher.isEmpty ? nil : dataDict[higher.minElement()!]
@@ -319,7 +316,7 @@ class ViewController: UIViewController {
         self.percentDiffFuel = (self.differenceFuel/fuel1)*100
         self.fuelSaved = self.differenceFuel*2.50
         self.savingCO2 = self.differenceFuel*19.64
-
+        
         let a = String(format: "%.2f", self.differenceFuel)
         let b = String(format: "%.2f", self.fuelSaved)
         let c = String(format: "%.2f", self.savingCO2)
@@ -357,7 +354,7 @@ class ViewController: UIViewController {
             mapView1.selectedMarker=speedMarker
         }
         
-     }
+    }
     
     func drawRoute() {
         for step in finalDict {
@@ -367,7 +364,7 @@ class ViewController: UIViewController {
         }
         compareAndDraw()
     }
- 
+    
     //MARK: drawing routes based on fuel vs duration factor
     func compareAndDraw(){
         if(self.routeWithMinDuration == self.routeWithMinFuelNo){
@@ -398,9 +395,45 @@ class ViewController: UIViewController {
 }
 
 
-
-extension ViewController: CLLocationManagerDelegate {
-    // 2
+    
+//MARK: to enable places api
+extension ViewController: GMSAutocompleteViewControllerDelegate{
+    // Handle the user's selection.
+    func viewController(_viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: NSError) {
+        print(error)
+    }
+    func viewController(viewController: GMSAutocompleteViewController, didAutocompleteWithPlace place: GMSPlace) {
+        //origin.text=""
+        print("Place name: \(place.name)")
+        print("Place address: \(place.formattedAddress)")
+        print("Place attributions: \(place.attributions)")
+        dispatch_async(dispatch_get_main_queue()){
+            self.origin.text = place.name
+        }
+        
+ 
+        // TODO: Add code to get address components from the selected place.
+        
+        // Close the autocomplete widget.
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func wasCancelled(_viewController: GMSAutocompleteViewController) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    
+    // Show the network activity indicator.
+    func didRequestAutocompletePredictions(viewController: GMSAutocompleteViewController) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        //UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    }
+    
+    // Hide the network activity indicator.
+    func didUpdateAutocompletePredictions(viewController: GMSAutocompleteViewController) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+    }
+    
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         // 3
         if status == .AuthorizedWhenInUse {
@@ -427,3 +460,8 @@ extension ViewController: CLLocationManagerDelegate {
         
     }
 }
+
+
+
+
+

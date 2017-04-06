@@ -10,6 +10,7 @@
 		5E1130851E940BC500BFBA51 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1130841E940BC500BFBA51 /* Helper.swift */; };
 		5E1130871E94338400BFBA51 /* smallFast.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 5E1130861E94338400BFBA51 /* smallFast.jpeg */; };
 		5E1130891E9445A500BFBA51 /* smallestcar.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 5E1130881E9445A500BFBA51 /* smallestcar.jpeg */; };
+		5E269FF21E95C30A001C0E1D /* temp.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E269FF11E95C30A001C0E1D /* temp.m */; };
 		5E85B45A1E8020CE00E7E8D2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E85B4591E8020CE00E7E8D2 /* AppDelegate.swift */; };
 		5E85B45C1E8020CE00E7E8D2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E85B45B1E8020CE00E7E8D2 /* ViewController.swift */; };
 		5E85B45F1E8020CE00E7E8D2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E85B45D1E8020CE00E7E8D2 /* Main.storyboard */; };
@@ -50,6 +51,8 @@
 		5E1130841E940BC500BFBA51 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		5E1130861E94338400BFBA51 /* smallFast.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = smallFast.jpeg; sourceTree = "<group>"; };
 		5E1130881E9445A500BFBA51 /* smallestcar.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = smallestcar.jpeg; sourceTree = "<group>"; };
+		5E269FF01E95C30A001C0E1D /* GreenRoute-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GreenRoute-Bridging-Header.h"; sourceTree = "<group>"; };
+		5E269FF11E95C30A001C0E1D /* temp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = temp.m; sourceTree = "<group>"; };
 		5E85B4561E8020CE00E7E8D2 /* GreenRoute.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenRoute.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E85B4591E8020CE00E7E8D2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5E85B45B1E8020CE00E7E8D2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -121,6 +124,7 @@
 		5E85B44D1E8020CE00E7E8D2 = {
 			isa = PBXGroup;
 			children = (
+				5E269FF11E95C30A001C0E1D /* temp.m */,
 				5E88BA721E8D94F400C3B0D5 /* speed.plist */,
 				5E85B48D1E802BD800E7E8D2 /* Accelerate.framework */,
 				5E85B48B1E802BD000E7E8D2 /* CoreGraphics.framework */,
@@ -140,6 +144,7 @@
 				5E85B4571E8020CE00E7E8D2 /* Products */,
 				A8F2AEE11E89A901006C942B /* Assets.xcassets */,
 				5E88BA7C1E8EFBFC00C3B0D5 /* ios */,
+				5E269FF01E95C30A001C0E1D /* GreenRoute-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -266,6 +271,7 @@
 				5E85B45C1E8020CE00E7E8D2 /* ViewController.swift in Sources */,
 				5E85B45A1E8020CE00E7E8D2 /* AppDelegate.swift in Sources */,
 				5E1130851E940BC500BFBA51 /* Helper.swift in Sources */,
+				5E269FF21E95C30A001C0E1D /* temp.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -382,6 +388,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-5";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -395,6 +402,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.map.GreenRoute;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "GreenRoute-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -402,6 +411,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-5";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -415,6 +425,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.map.GreenRoute;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "GreenRoute-Bridging-Header.h";
 			};
 			name = Release;
 		};
