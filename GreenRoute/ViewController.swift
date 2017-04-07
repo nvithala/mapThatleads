@@ -72,7 +72,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     
     var locationManager = CLLocationManager()
     var error:NSError!
-    
     var didFindMyLocation = false
     
     var locationMarker: GMSMarker!
@@ -397,13 +396,40 @@ extension ViewController: GMSAutocompleteViewControllerDelegate{
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
         
+        if let addressLines = place.addressComponents {
+            // Populate all of the address fields we can find.
+            for field in addressLines {
+                switch field.type {
+                case kGMSPlaceTypeStreetNumber:
+                    print("street_number\(field.name)")
+//                case kGMSPlaceTypeRoute:
+//                    route = field.name
+//                case kGMSPlaceTypeNeighborhood:
+//                    neighborhood = field.name
+//                case kGMSPlaceTypeLocality:
+//                    locality = field.name
+//                case kGMSPlaceTypeAdministrativeAreaLevel1:
+//                    administrative_area_level_1 = field.name
+//                case kGMSPlaceTypeCountry:
+//                    country = field.name
+//                case kGMSPlaceTypePostalCode:
+//                    postal_code = field.name
+//                case kGMSPlaceTypePostalCodeSuffix:
+//                    postal_code_suffix = field.name
+                // Print the items we aren't using.
+                default:
+                    print("Type: \(field.type), Name: \(field.name)")
+                }
+            }
+        }
+        
         if self.sourceTap {
             dispatch_async(dispatch_get_main_queue()){
-                self.origin.text = place.name
+                self.origin.text = place.formattedAddress! as String
             }
         }else{
             dispatch_async(dispatch_get_main_queue()){
-                self.destination.text = place.name
+                self.destination.text = place.formattedAddress! as String
             }
         }
         dismissViewControllerAnimated(true, completion: nil)
