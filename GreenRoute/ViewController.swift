@@ -9,6 +9,7 @@
 import UIKit
 import GoogleMaps
 import GooglePlaces
+//import JSSAlertView
 
 class ViewController: UIViewController,CLLocationManagerDelegate {
 
@@ -62,6 +63,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     var finalDisplayString:String = ""
     var fasterBy:String = ""
     var placesClient: GMSPlacesClient!
+    var bounds = GMSCoordinateBounds()
+    
     
     //markers
     var originMarker: GMSMarker!
@@ -86,7 +89,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         placesClient = GMSPlacesClient.sharedClient()
 
     }
-    
+
     func clearDictionaries(){
         self.dict = [:]
         self.finalDict = []
@@ -385,6 +388,45 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     
 //MARK: to enable places api
 extension ViewController: GMSAutocompleteViewControllerDelegate{
+    
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        // 3
+        if status == .AuthorizedWhenInUse {
+            
+            // 4
+            locationManager.startUpdatingLocation()
+            print(locationManager.location)
+            print("started updating location")
+            //5
+            mapView1.myLocationEnabled = true
+            mapView1.settings.myLocationButton = true
+        }
+    }
+    
+    // 6
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            print(location)
+            let lat = manager.location!.coordinate.latitude
+            let long = manager.location!.coordinate.longitude
+            let offset = 200.0 / 1000.0;
+            let latMax = lat + offset;
+            let latMin = lat - offset;
+            let lngOffset = offset * cos(lat * M_PI / 200.0);
+            let lngMax = long + lngOffset;
+            let lngMin = long - lngOffset;
+            let initialLocation = CLLocationCoordinate2D(latitude: latMax, longitude: lngMax)
+            let otherLocation = CLLocationCoordinate2D(latitude: latMin, longitude: lngMin)
+            bounds = GMSCoordinateBounds(coordinate: initialLocation, coordinate: otherLocation)
+            
+            // 7
+            mapView1.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+            
+            // 8
+            locationManager.stopUpdatingLocation()
+        }
+        
+    }
     // Handle the user's selection.
     func viewController(_viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: NSError) {
         print(error)
@@ -395,33 +437,6 @@ extension ViewController: GMSAutocompleteViewControllerDelegate{
         print("Place name: \(place.name)")
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
-        
-        if let addressLines = place.addressComponents {
-            // Populate all of the address fields we can find.
-            for field in addressLines {
-                switch field.type {
-                case kGMSPlaceTypeStreetNumber:
-                    print("street_number\(field.name)")
-//                case kGMSPlaceTypeRoute:
-//                    route = field.name
-//                case kGMSPlaceTypeNeighborhood:
-//                    neighborhood = field.name
-//                case kGMSPlaceTypeLocality:
-//                    locality = field.name
-//                case kGMSPlaceTypeAdministrativeAreaLevel1:
-//                    administrative_area_level_1 = field.name
-//                case kGMSPlaceTypeCountry:
-//                    country = field.name
-//                case kGMSPlaceTypePostalCode:
-//                    postal_code = field.name
-//                case kGMSPlaceTypePostalCodeSuffix:
-//                    postal_code_suffix = field.name
-                // Print the items we aren't using.
-                default:
-                    print("Type: \(field.type), Name: \(field.name)")
-                }
-            }
-        }
         
         if self.sourceTap {
             dispatch_async(dispatch_get_main_queue()){
@@ -450,40 +465,13 @@ extension ViewController: GMSAutocompleteViewControllerDelegate{
     func didUpdateAutocompletePredictions(viewController: GMSAutocompleteViewController) {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
     }
-    
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        // 3
-        if status == .AuthorizedWhenInUse {
-            
-            // 4
-            locationManager.startUpdatingLocation()
-            
-            //5
-            mapView1.myLocationEnabled = true
-            mapView1.settings.myLocationButton = true
-        }
-    }
-    
-    // 6
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.first {
-            
-            // 7
-            mapView1.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
-            
-            // 8
-            locationManager.stopUpdatingLocation()
-        }
-        
-    }
+
     
     func sourceTap(sender: AnyObject) {
-        
         self.sourceTap = true
-        
         let autocompleteController = GMSAutocompleteViewController()
+        autocompleteController.autocompleteBounds = bounds
         autocompleteController.delegate = self
-        
         // Set a filter to return only addresses.
         let addressFilter = GMSAutocompleteFilter()
         //addressFilter.type = .Address
@@ -491,30 +479,20 @@ extension ViewController: GMSAutocompleteViewControllerDelegate{
         //addressFilter.type = .City
         autocompleteController.autocompleteFilter = addressFilter
         presentViewController(autocompleteController, animated: true, completion: nil)
-        
-        
     }
     
     func destinationTap(sender: AnyObject) {
-        
         self.sourceTap = false
-        
         let autocompleteController = GMSAutocompleteViewController()
         autocompleteController.delegate = self
-        
+        autocompleteController.autocompleteBounds = bounds
         // Set a filter to return only addresses.
         let addressFilter = GMSAutocompleteFilter()
-        //addressFilter.type = .Address
         //addressFilter.country = "US"
-        //addressFilter.type = .City
         autocompleteController.autocompleteFilter = addressFilter
         presentViewController(autocompleteController, animated: true, completion: nil)
         
         
     }
 }
-
-
-
-
 

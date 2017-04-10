@@ -11,6 +11,7 @@
 		5E1130871E94338400BFBA51 /* smallFast.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 5E1130861E94338400BFBA51 /* smallFast.jpeg */; };
 		5E1130891E9445A500BFBA51 /* smallestcar.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 5E1130881E9445A500BFBA51 /* smallestcar.jpeg */; };
 		5E269FF21E95C30A001C0E1D /* temp.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E269FF11E95C30A001C0E1D /* temp.m */; };
+		5E4F26FB1E9BCDBB00867527 /* JSSAlertView in Resources */ = {isa = PBXBuildFile; fileRef = 5E4F26FA1E9BCDBB00867527 /* JSSAlertView */; };
 		5E85B45A1E8020CE00E7E8D2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E85B4591E8020CE00E7E8D2 /* AppDelegate.swift */; };
 		5E85B45C1E8020CE00E7E8D2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E85B45B1E8020CE00E7E8D2 /* ViewController.swift */; };
 		5E85B45F1E8020CE00E7E8D2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E85B45D1E8020CE00E7E8D2 /* Main.storyboard */; };
@@ -52,6 +53,7 @@
 		5E1130881E9445A500BFBA51 /* smallestcar.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = smallestcar.jpeg; sourceTree = "<group>"; };
 		5E269FF01E95C30A001C0E1D /* GreenRoute-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GreenRoute-Bridging-Header.h"; sourceTree = "<group>"; };
 		5E269FF11E95C30A001C0E1D /* temp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = temp.m; sourceTree = "<group>"; };
+		5E4F26FA1E9BCDBB00867527 /* JSSAlertView */ = {isa = PBXFileReference; lastKnownFileType = folder; path = JSSAlertView; sourceTree = "<group>"; };
 		5E85B4561E8020CE00E7E8D2 /* GreenRoute.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenRoute.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E85B4591E8020CE00E7E8D2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5E85B45B1E8020CE00E7E8D2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 		5E4F26F91E96D78800867527 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5E4F26FA1E9BCDBB00867527 /* JSSAlertView */,
 				5EED857E1E956F3300D6F2F5 /* GooglePlaces.bundle */,
 				5EED857C1E956EE600D6F2F5 /* GooglePlacePicker.bundle */,
 				5EED85781E956E1C00D6F2F5 /* GooglePlacePicker.framework */,
@@ -260,6 +263,7 @@
 				5E88BA771E8DB58700C3B0D5 /* icon.jpg in Resources */,
 				5E88BA791E8EEDE400C3B0D5 /* small.jpeg in Resources */,
 				5E85B46C1E80271100E7E8D2 /* GoogleMaps.bundle in Resources */,
+				5E4F26FB1E9BCDBB00867527 /* JSSAlertView in Resources */,
 				5EED857D1E956EE600D6F2F5 /* GooglePlacePicker.bundle in Resources */,
 				5E99A7C01E94982A0020CE66 /* lemon.jpg in Resources */,
 			);
