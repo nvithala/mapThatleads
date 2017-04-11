@@ -11,6 +11,8 @@ import GoogleMaps
 import GooglePlaces
 //import JSSAlertView
 
+var justOnce:Bool = true
+
 class ViewController: UIViewController,CLLocationManagerDelegate {
 
     @IBOutlet weak var origin: UITextField!
@@ -41,9 +43,12 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     var bufferDuration:UInt = 0
     var dataDict:[Double:Double] = [:]
     var dataDictTraffic:[Double:Double] = [:]
+    var hybriddataDict:[Double:Double] = [:]
     var routeDict:[UInt:Double] = [:]
     var totalFuel:Double = 0
     var finalDict:Array<Dictionary<NSObject, AnyObject>> = []
+    var hybrid: Bool = false
+    var NOThybrid: Bool = false
     
     var sourceTap: Bool = false
 
@@ -88,6 +93,32 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
         placesClient = GMSPlacesClient.sharedClient()
 
+
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        if(justOnce){
+            let alertController = UIAlertController(title: "Car Type", message: "Which Car do you drive?", preferredStyle: .Alert)
+            
+            let actionYes = UIAlertAction(title: "Hybrid", style: .Default) { (action:UIAlertAction) in
+                print("You've pressed the Yes button")
+                self.hybrid = true
+            }
+            
+            let actionNo = UIAlertAction(title: "Normal", style: .Default) { (action:UIAlertAction) in
+                print("You've pressed No button")
+                self.NOThybrid = true
+            }
+            
+            //let image = UIImage(named: "lemon.jpg")
+            //actionYes.setValue(image, forKey: "Yes")
+            
+            alertController.addAction(actionYes)
+            alertController.addAction(actionNo)
+            self.presentViewController(alertController, animated: true, completion:nil)
+            justOnce=false
+        }
+        
     }
 
     func clearDictionaries(){
@@ -123,6 +154,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         let finalURL = NSURL(string: directionsURl)
         let directionsData = NSData(contentsOfURL: finalURL!)
         
+        //MARK: data
         dataDict[7] = 0.0689655172413793
         dataDict[16.0625] = 0.0689655172413793
         dataDict[19] = 0.0526315789473684
@@ -137,6 +169,25 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         dataDictTraffic[19.2] = 0.0520833333333333
         dataDictTraffic[19.8] = 0.0505050505050505
         
+        //MARK: hybrid Data
+        hybriddataDict[5] = 0.0202604920402102
+        hybriddataDict[10] = 0.0202839756578303
+        hybriddataDict[15] = 0.020333075132268
+        hybriddataDict[20] = 0.0204081632593086
+        hybriddataDict[25] = 0.0205098154020884
+        hybriddataDict[30] = 0.0202604920402102
+        hybriddataDict[35] = 0.0207961972472435
+        hybriddataDict[40] = 0.020983213403166
+        hybriddataDict[45] = 0.0212014133937445
+        hybriddataDict[50] = 0.0214526508918699
+        hybriddataDict[55] = 0.0217391303814272
+        hybriddataDict[60] = 0.0220634586442949
+        hybriddataDict[65] = 0.0224287086676216
+        hybriddataDict[70] = 0.0228384990885294
+        hybriddataDict[75] = 0.0232970932956804
+        hybriddataDict[80] = 0.0238095236732426
+        hybriddataDict[85] = 0.0243817483582131
+
         /*
          * Something!
         */
@@ -198,6 +249,12 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         return k
     }
     
+    func nextHighestHybrid(n: Double) -> Double? {
+        let higher1:Array<Double> = hybriddataDict.keys.filter{$0 >= n}
+        let k1 = higher1.isEmpty ? nil : hybriddataDict[higher1.minElement()!]
+        return k1
+    }
+    
     func clearMarkers(){
         fuelMarker = nil
         speedMarker = nil
@@ -224,11 +281,27 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
             let durationSeconds = (step["duration"] as! Dictionary<NSObject, AnyObject>)["value"] as! Double
             let distanceMiles = distanceMetres * 0.000621371
             let durationHours = durationSeconds / 3600
-            let speed = distanceMiles / durationHours
-            let minMiles = nextHighest(speed)
+            let speed:Double = distanceMiles / durationHours
+            print("speed \(speed)")
+            var minMiles:Double = 0.0
+            var minMilesHy:Double = 0.0
+            
+            if(self.hybrid == true){
+                print("hybrid")
+                minMilesHy = nextHighestHybrid(speed)!
+                print("MIN MILES\(minMilesHy)")
+            }
+            if(self.NOThybrid == true){
+                minMiles = nextHighest(speed)!
+            }
             distanceLeg += distanceMiles
-            let gallons = minMiles!*distanceMiles
-            fuelForLeg += gallons
+            if(self.hybrid){
+                fuelForLeg += minMilesHy*distanceMiles
+            } else {
+                fuelForLeg += minMiles*distanceMiles
+            }
+//            let gallons = minMiles*distanceMiles
+//            fuelForLeg += gallons
         }
         print("GALLONS\(fuelForLeg)")
         return fuelForLeg
@@ -290,12 +363,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         //MARK: for speed comparisions
         let x = self.finalDict[Int(self.routeWithMinDuration)] as Dictionary<NSObject,AnyObject>
         let y = x["route"] as! Int
-        print(y)
         let z = self.finalDict[Int(self.routeWithMinFuelNo)] as Dictionary<NSObject,AnyObject>
         let w = z["route"] as! Int
-        print(w)
         let diff = w-y
-        print(diff)
         self.fasterBy = "This route is faster by"+String(diff/60)+"mins"
         print(self.fasterBy)
         
@@ -395,7 +465,6 @@ extension ViewController: GMSAutocompleteViewControllerDelegate{
             
             // 4
             locationManager.startUpdatingLocation()
-            print(locationManager.location)
             print("started updating location")
             //5
             mapView1.myLocationEnabled = true
@@ -406,7 +475,6 @@ extension ViewController: GMSAutocompleteViewControllerDelegate{
     // 6
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
-            print(location)
             let lat = manager.location!.coordinate.latitude
             let long = manager.location!.coordinate.longitude
             let offset = 200.0 / 1000.0;
@@ -434,12 +502,13 @@ extension ViewController: GMSAutocompleteViewControllerDelegate{
     func viewController(viewController: GMSAutocompleteViewController, didAutocompleteWithPlace place: GMSPlace) {
         //origin.text=""
         
-        print("Place name: \(place.name)")
-        print("Place address: \(place.formattedAddress)")
-        print("Place attributions: \(place.attributions)")
+       // print("Place name: \(place.name)")
+       // print("Place address: \(place.formattedAddress)")
+       // print("Place attributions: \(place.attributions)")
         
         if self.sourceTap {
             dispatch_async(dispatch_get_main_queue()){
+                print(place.formattedAddress)
                 self.origin.text = place.formattedAddress! as String
             }
         }else{
