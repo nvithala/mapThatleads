@@ -38,7 +38,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     var totalDistance: String!
     var totalDurationInSeconds: UInt = 0
     var totalDuration: String!
-    var dict:[UInt:AnyObject] = [:]
+    var dict:[UInt:AnyObject] = [:] 
+    
     var minDuration:UInt = UInt.max
     var bufferDuration:UInt = 0
     var dataDict:[Double:Double] = [:]
@@ -98,9 +99,11 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     
     override func viewDidAppear(animated: Bool) {
         if(justOnce){
-            let alertController = UIAlertController(title: "Car Type", message: "Which Car do you drive?", preferredStyle: .Alert)
             
-            let actionYes = UIAlertAction(title: "Hybrid", style: .Default) { (action:UIAlertAction) in
+            
+            let alertController = UIAlertController(title: "Car Type", message: "Please select your car type", preferredStyle: .Alert)
+            
+            var actionYes = UIAlertAction(title: "Hybrid", style: .Default) { (action:UIAlertAction) in
                 print("You've pressed the Yes button")
                 self.hybrid = true
             }
@@ -110,11 +113,17 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
                 self.NOThybrid = true
             }
             
-            //let image = UIImage(named: "lemon.jpg")
-            //actionYes.setValue(image, forKey: "Yes")
+          //  let image = UIImage(named: "car1.jpg")
             
+            let image:UIImage? = UIImage(named:"lemon.jpg")!.imageWithRenderingMode(.AlwaysOriginal)
+            
+          //  var imageView = UIImageView(frame: CGRectMake(220, 10, 40, 40))
+          //  imageView.image = UIImage(named: "lemon.jpg")
+            
+            actionYes.setValue(image, forKey: "image")
             alertController.addAction(actionYes)
             alertController.addAction(actionNo)
+            
             self.presentViewController(alertController, animated: true, completion:nil)
             justOnce=false
         }
@@ -133,7 +142,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         view.endEditing(true)
         let camera: GMSCameraPosition = GMSCameraPosition.cameraWithLatitude(48.857165, longitude: 2.354613, zoom: 1.0)
         mapView1.camera = camera
-        
         let sourceStr: String = origin.text!
         let destinationStr: String = destination.text!
         var error: NSError?
