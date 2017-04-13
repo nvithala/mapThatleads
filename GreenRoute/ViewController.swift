@@ -112,15 +112,12 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
                 print("You've pressed No button")
                 self.NOThybrid = true
             }
-            
-          //  let image = UIImage(named: "car1.jpg")
-            
-            let image:UIImage? = UIImage(named:"lemon.jpg")!.imageWithRenderingMode(.AlwaysOriginal)
-            
-          //  var imageView = UIImageView(frame: CGRectMake(220, 10, 40, 40))
-          //  imageView.image = UIImage(named: "lemon.jpg")
-            
+            let image:UIImage? = UIImage(named:"hybrid.jpg")!.imageWithRenderingMode(.AlwaysOriginal)
+            let image1:UIImage? = UIImage(named:"conventional.jpg")!.imageWithRenderingMode(.AlwaysOriginal)
+
             actionYes.setValue(image, forKey: "image")
+            actionNo.setValue(image1, forKey: "image")
+            
             alertController.addAction(actionYes)
             alertController.addAction(actionNo)
             
@@ -136,6 +133,34 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         self.routeDict = [:]
         self.arrayOfPoints = []
         self.dicForCustomMarkers = []
+    }
+    
+    @IBAction func openGmaps(sender: AnyObject) {
+        
+        print("in open maps")
+        let googleURLString = "http://maps.google.com"
+        if let googleUrl = NSURL(string: googleURLString) {
+            if UIApplication.sharedApplication().canOpenURL(googleUrl){
+                //let alertController = UIAlertController(title: "AHHH", message: "Please select your car type", preferredStyle: .Alert)
+                //self.presentViewController(alertController, animated: true, completion:nil)
+                UIApplication.sharedApplication().openURL(googleUrl)
+            } else {
+                let alertController = UIAlertController(title: "Car Type", message: "Please select your car type", preferredStyle: .Alert)
+                self.presentViewController(alertController, animated: true, completion:nil)
+            }
+        }
+//        
+//        if(UIApplication.sharedApplication().canOpenURL(NSURL(string:"comgooglemaps://")!)){
+//            let alertController = UIAlertController(title: "Car Type", message: "Please select your car type", preferredStyle: .Alert)
+//            //UIApplication.sharedApplication().ope
+//            UIApplication.sharedApplication().openURL(NSURL(string:"comgooglemaps://")!)
+//            self.presentViewController(alertController, animated: true, completion:nil)
+//        } else {
+//            let alertController = UIAlertController(title: "AHHH", message: "Please select your car type", preferredStyle: .Alert)
+//            self.presentViewController(alertController, animated: true, completion:nil)
+//            print("Can't use comgooglemaps://")
+//        }
+        
     }
     
     @IBAction func parseAndGet(sender: AnyObject) {
@@ -204,7 +229,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
             print("start dispatching")
             // to deserialize the data.
             do {
-                if let dictionary = try NSJSONSerialization.JSONObjectWithData(directionsData!, options: .MutableContainers) as? Dictionary<NSObject,AnyObject> {
+                    if let dictionary = try NSJSONSerialization.JSONObjectWithData(directionsData!, options: .MutableContainers) as? Dictionary<NSObject,AnyObject> {
                     print("check do")
                     if(error != nil){
                         print(error)
@@ -249,7 +274,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
                 print(error)
             }
         })
-}
+        }
 
     func nextHighest(n: Double) -> Double? {
         let higher:Array<Double> = dataDict.keys.filter{$0 >= n}
