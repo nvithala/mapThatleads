@@ -18,8 +18,6 @@
 		5E661F571EA004A500B8A207 /* H1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E661F561EA004A500B8A207 /* H1.jpg */; };
 		5E661F591EA0073600B8A207 /* H12.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 5E661F581EA0073600B8A207 /* H12.jpeg */; };
 		5E661F5B1EA0088100B8A207 /* conventional.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E661F5A1EA0088100B8A207 /* conventional.jpg */; };
-		5E83D03A1E9FD2A400C18EF6 /* GooglePlaces.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5E83D0391E9FD2A400C18EF6 /* GooglePlaces.bundle */; };
-		5E83D03E1E9FD2CF00C18EF6 /* GooglePlacePicker.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5E83D03D1E9FD2CF00C18EF6 /* GooglePlacePicker.bundle */; };
 		5E852D7A1E9EB80700F187C7 /* car.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E852D791E9EB80700F187C7 /* car.jpg */; };
 		5E852D7C1E9EB85800F187C7 /* car1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E852D7B1E9EB85800F187C7 /* car1.jpg */; };
 		5E85B45A1E8020CE00E7E8D2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E85B4591E8020CE00E7E8D2 /* AppDelegate.swift */; };
@@ -50,6 +48,8 @@
 		5E88BA7D1E8EFBFC00C3B0D5 /* ios in Resources */ = {isa = PBXBuildFile; fileRef = 5E88BA7C1E8EFBFC00C3B0D5 /* ios */; };
 		5E99A7BE1E9498140020CE66 /* Greenroute_icon new.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E99A7BD1E9498140020CE66 /* Greenroute_icon new.jpg */; };
 		5E99A7C01E94982A0020CE66 /* lemon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E99A7BF1E94982A0020CE66 /* lemon.jpg */; };
+		5ECF16871EA11319006EF484 /* GooglePlaces.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5ECF16861EA11319006EF484 /* GooglePlaces.bundle */; };
+		5ECF16891EA1132E006EF484 /* GooglePlacePicker.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5ECF16881EA1132D006EF484 /* GooglePlacePicker.bundle */; };
 		5EED85771E956E0800D6F2F5 /* GooglePlaces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EED85761E956E0800D6F2F5 /* GooglePlaces.framework */; };
 		5EED85791E956E1C00D6F2F5 /* GooglePlacePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EED85781E956E1C00D6F2F5 /* GooglePlacePicker.framework */; };
 		A8F2AEE21E89A901006C942B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8F2AEE11E89A901006C942B /* Assets.xcassets */; };
@@ -68,8 +68,6 @@
 		5E661F561EA004A500B8A207 /* H1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = H1.jpg; sourceTree = "<group>"; };
 		5E661F581EA0073600B8A207 /* H12.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = H12.jpeg; sourceTree = "<group>"; };
 		5E661F5A1EA0088100B8A207 /* conventional.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = conventional.jpg; sourceTree = "<group>"; };
-		5E83D0391E9FD2A400C18EF6 /* GooglePlaces.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GooglePlaces.bundle; path = "../Downloads/GooglePlaces-2.2.0/Frameworks/GooglePlaces.framework/Versions/A/Resources/GooglePlaces.bundle"; sourceTree = "<group>"; };
-		5E83D03D1E9FD2CF00C18EF6 /* GooglePlacePicker.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GooglePlacePicker.bundle; path = "../Downloads/GooglePlacePicker-2.2.0/Frameworks/GooglePlacePicker.framework/Versions/A/Resources/GooglePlacePicker.bundle"; sourceTree = "<group>"; };
 		5E852D791E9EB80700F187C7 /* car.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = car.jpg; sourceTree = "<group>"; };
 		5E852D7B1E9EB85800F187C7 /* car1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = car1.jpg; sourceTree = "<group>"; };
 		5E85B4561E8020CE00E7E8D2 /* GreenRoute.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenRoute.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,6 +100,8 @@
 		5E88BA7C1E8EFBFC00C3B0D5 /* ios */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ios; sourceTree = "<group>"; };
 		5E99A7BD1E9498140020CE66 /* Greenroute_icon new.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Greenroute_icon new.jpg"; sourceTree = "<group>"; };
 		5E99A7BF1E94982A0020CE66 /* lemon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lemon.jpg; sourceTree = "<group>"; };
+		5ECF16861EA11319006EF484 /* GooglePlaces.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlaces.bundle; sourceTree = "<group>"; };
+		5ECF16881EA1132D006EF484 /* GooglePlacePicker.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlacePicker.bundle; sourceTree = "<group>"; };
 		5EED85761E956E0800D6F2F5 /* GooglePlaces.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GooglePlaces.framework; path = GreenRoute/GooglePlaces.framework; sourceTree = "<group>"; };
 		5EED85781E956E1C00D6F2F5 /* GooglePlacePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GooglePlacePicker.framework; path = GreenRoute/GooglePlacePicker.framework; sourceTree = "<group>"; };
 		A8F2AEE11E89A901006C942B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -141,8 +141,8 @@
 			isa = PBXGroup;
 			children = (
 				5E85B4771E80279700E7E8D2 /* CoreLocation.framework */,
-				5E83D03D1E9FD2CF00C18EF6 /* GooglePlacePicker.bundle */,
-				5E83D0391E9FD2A400C18EF6 /* GooglePlaces.bundle */,
+				5ECF16881EA1132D006EF484 /* GooglePlacePicker.bundle */,
+				5ECF16861EA11319006EF484 /* GooglePlaces.bundle */,
 				5E4F26FA1E9BCDBB00867527 /* JSSAlertView */,
 				5EED85781E956E1C00D6F2F5 /* GooglePlacePicker.framework */,
 				5EED85761E956E0800D6F2F5 /* GooglePlaces.framework */,
@@ -283,6 +283,7 @@
 				5E1130871E94338400BFBA51 /* smallFast.jpeg in Resources */,
 				5E85B45F1E8020CE00E7E8D2 /* Main.storyboard in Resources */,
 				5E852D7C1E9EB85800F187C7 /* car1.jpg in Resources */,
+				5ECF16891EA1132E006EF484 /* GooglePlacePicker.bundle in Resources */,
 				5E661F551EA0041400B8A207 /* H.jpg in Resources */,
 				A8F2AEE21E89A901006C942B /* Assets.xcassets in Resources */,
 				5E1130891E9445A500BFBA51 /* smallestcar.jpeg in Resources */,
@@ -291,12 +292,11 @@
 				5E661F591EA0073600B8A207 /* H12.jpeg in Resources */,
 				5E852D7A1E9EB80700F187C7 /* car.jpg in Resources */,
 				5E85B46C1E80271100E7E8D2 /* GoogleMaps.bundle in Resources */,
+				5ECF16871EA11319006EF484 /* GooglePlaces.bundle in Resources */,
 				5E661F5B1EA0088100B8A207 /* conventional.jpg in Resources */,
 				5E661F511EA000F200B8A207 /* hybrid.jpg in Resources */,
 				5E4F26FB1E9BCDBB00867527 /* JSSAlertView in Resources */,
 				5E661F571EA004A500B8A207 /* H1.jpg in Resources */,
-				5E83D03E1E9FD2CF00C18EF6 /* GooglePlacePicker.bundle in Resources */,
-				5E83D03A1E9FD2A400C18EF6 /* GooglePlaces.bundle in Resources */,
 				5E99A7C01E94982A0020CE66 /* lemon.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

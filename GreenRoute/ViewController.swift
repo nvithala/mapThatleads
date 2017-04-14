@@ -70,6 +70,14 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     var fasterBy:String = ""
     var placesClient: GMSPlacesClient!
     var bounds = GMSCoordinateBounds()
+    var sourceStr: String = ""
+    var destinationStr: String = ""
+    var a = 0.0
+    var b =  0.0
+    var c =  0.0
+    var d =  0.0
+    var flagForRoute:Bool = true
+    
     
     
     //markers
@@ -138,7 +146,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     @IBAction func openGmaps(sender: AnyObject) {
         
         print("in open maps")
-        let googleURLString = "http://maps.google.com"
+        var googleURLString = "http://maps.google.com?f=d&saddr=\(self.sourceStr)&daddr=\(self.destinationStr)&sspn=0.2,0.1&nav=1"
+        googleURLString = googleURLString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+        print(self.originCoordinate)
         if let googleUrl = NSURL(string: googleURLString) {
             if UIApplication.sharedApplication().canOpenURL(googleUrl){
                 //let alertController = UIAlertController(title: "AHHH", message: "Please select your car type", preferredStyle: .Alert)
@@ -167,8 +177,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         view.endEditing(true)
         let camera: GMSCameraPosition = GMSCameraPosition.cameraWithLatitude(48.857165, longitude: 2.354613, zoom: 1.0)
         mapView1.camera = camera
-        let sourceStr: String = origin.text!
-        let destinationStr: String = destination.text!
+         sourceStr = origin.text!
+        destinationStr = destination.text!
+       
         var error: NSError?
         
         self.clearDictionaries()
@@ -241,13 +252,25 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
                             for item in self.notSelectedRoute {
                                 print("ROUTE:\(self.displayRoute)")
                                 self.overviewPolyline = item["overview_polyline"] as! Dictionary<NSObject, AnyObject>
+                                print(item)
                                 var legs = item["legs"] as! Array<Dictionary<NSObject, AnyObject>>
                                 
                                 let startLoc = legs[0]["start_location"] as! Dictionary<NSObject, AnyObject>
                                 self.originCoordinate =  CLLocationCoordinate2DMake(startLoc["lat"] as! Double, startLoc["lng"] as! Double)
+                                print(startLoc)
+                                
+                                self.a = startLoc["lat"] as! Double
+                                self.b = startLoc["lng"] as! Double
+                                
+                                print(self.a)
+                                print(self.b)
                                 
                                 let endLoc = legs[legs.count - 1]["end_location"] as! Dictionary<NSObject, AnyObject>
                                 self.destinationCoordinate = CLLocationCoordinate2DMake(endLoc["lat"] as! Double, endLoc["lng"] as! Double)
+                                self.c = endLoc["lat"] as! Double
+                                self.d = endLoc["lng"] as! Double
+                                print(self.c)
+                                print(self.d)
                                 
                                 self.originAddress = legs[0]["start_address"] as! String
                                 self.destinationAddress = legs[legs.count - 1]["end_address"] as! String
@@ -535,9 +558,9 @@ extension ViewController: GMSAutocompleteViewControllerDelegate{
     func viewController(viewController: GMSAutocompleteViewController, didAutocompleteWithPlace place: GMSPlace) {
         //origin.text=""
         
-       // print("Place name: \(place.name)")
-       // print("Place address: \(place.formattedAddress)")
-       // print("Place attributions: \(place.attributions)")
+        print("Place name: \(place.name)")
+        print("Place address: \(place.formattedAddress)")
+        print("Place attributions: \(place.attributions)")
         
         if self.sourceTap {
             dispatch_async(dispatch_get_main_queue()){
