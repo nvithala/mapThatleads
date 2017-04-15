@@ -23,12 +23,11 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     @IBOutlet weak var trial1: UITextField!
     @IBOutlet weak var trial2: UITextField!
     @IBOutlet weak var mapView1: GMSMapView!
+    
     //MARK:from here
-    
-    
     let baseURLDirections:String = "https://maps.googleapis.com/maps/api/directions/json?"
     var selectedRoute: Dictionary<NSObject,AnyObject>!
-    var notSelectedRoute: Array<Dictionary<NSObject, AnyObject>> = []
+    var returnedRoute: Array<Dictionary<NSObject, AnyObject>> = []
     var overviewPolyline: Dictionary<NSObject,AnyObject>!
     var originCoordinate: CLLocationCoordinate2D!
     var destinationCoordinate: CLLocationCoordinate2D!
@@ -38,8 +37,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     var totalDistance: String!
     var totalDurationInSeconds: UInt = 0
     var totalDuration: String!
-    var dict:[UInt:AnyObject] = [:] 
-    
+    var dict:[UInt:AnyObject] = [:]
     var minDuration:UInt = UInt.max
     var bufferDuration:UInt = 0
     var dataDict:[Double:Double] = [:]
@@ -72,10 +70,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     var bounds = GMSCoordinateBounds()
     var sourceStr: String = ""
     var destinationStr: String = ""
-    var a = 0.0
-    var b =  0.0
-    var c =  0.0
-    var d =  0.0
     var flagForRoute:Bool = true
     
     
@@ -111,7 +105,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
             
             let alertController = UIAlertController(title: "Car Type", message: "Please select your car type", preferredStyle: .Alert)
             
-            var actionYes = UIAlertAction(title: "Hybrid", style: .Default) { (action:UIAlertAction) in
+            let actionYes = UIAlertAction(title: "Hybrid", style: .Default) { (action:UIAlertAction) in
                 print("You've pressed the Yes button")
                 self.hybrid = true
             }
@@ -247,9 +241,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
                     } else {
                         let status = dictionary["status"] as! String
                         if status == "OK" {
-                            self.notSelectedRoute = (dictionary["routes"] as! Array<Dictionary<NSObject, AnyObject>>)
+                            self.returnedRoute = (dictionary["routes"] as! Array<Dictionary<NSObject, AnyObject>>)
                             
-                            for item in self.notSelectedRoute {
+                            for item in self.returnedRoute {
                                 print("ROUTE:\(self.displayRoute)")
                                 self.overviewPolyline = item["overview_polyline"] as! Dictionary<NSObject, AnyObject>
                                 print(item)
@@ -257,21 +251,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
                                 
                                 let startLoc = legs[0]["start_location"] as! Dictionary<NSObject, AnyObject>
                                 self.originCoordinate =  CLLocationCoordinate2DMake(startLoc["lat"] as! Double, startLoc["lng"] as! Double)
-                                print(startLoc)
-                                
-                                self.a = startLoc["lat"] as! Double
-                                self.b = startLoc["lng"] as! Double
-                                
-                                print(self.a)
-                                print(self.b)
-                                
                                 let endLoc = legs[legs.count - 1]["end_location"] as! Dictionary<NSObject, AnyObject>
                                 self.destinationCoordinate = CLLocationCoordinate2DMake(endLoc["lat"] as! Double, endLoc["lng"] as! Double)
-                                self.c = endLoc["lat"] as! Double
-                                self.d = endLoc["lng"] as! Double
-                                print(self.c)
-                                print(self.d)
-                                
+
                                 self.originAddress = legs[0]["start_address"] as! String
                                 self.destinationAddress = legs[legs.count - 1]["end_address"] as! String
                                 
@@ -356,8 +338,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
             } else {
                 fuelForLeg += minMiles*distanceMiles
             }
-//            let gallons = minMiles*distanceMiles
-//            fuelForLeg += gallons
         }
         print("GALLONS\(fuelForLeg)")
         return fuelForLeg
@@ -510,8 +490,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     
 }
 
-
-    
 //MARK: to enable places api
 extension ViewController: GMSAutocompleteViewControllerDelegate{
     
@@ -556,12 +534,9 @@ extension ViewController: GMSAutocompleteViewControllerDelegate{
         print(error)
     }
     func viewController(viewController: GMSAutocompleteViewController, didAutocompleteWithPlace place: GMSPlace) {
-        //origin.text=""
-        
-        print("Place name: \(place.name)")
-        print("Place address: \(place.formattedAddress)")
-        print("Place attributions: \(place.attributions)")
-        
+        //print("Place name: \(place.name)")
+        //print("Place address: \(place.formattedAddress)")
+        //print("Place attributions: \(place.attributions)")
         if self.sourceTap {
             dispatch_async(dispatch_get_main_queue()){
                 print(place.formattedAddress)
@@ -600,8 +575,6 @@ extension ViewController: GMSAutocompleteViewControllerDelegate{
         // Set a filter to return only addresses.
         let addressFilter = GMSAutocompleteFilter()
         //addressFilter.type = .Address
-       // addressFilter.country = "US"
-        //addressFilter.type = .City
         autocompleteController.autocompleteFilter = addressFilter
         presentViewController(autocompleteController, animated: true, completion: nil)
     }
@@ -613,7 +586,6 @@ extension ViewController: GMSAutocompleteViewControllerDelegate{
         autocompleteController.autocompleteBounds = bounds
         // Set a filter to return only addresses.
         let addressFilter = GMSAutocompleteFilter()
-        //addressFilter.country = "US"
         autocompleteController.autocompleteFilter = addressFilter
         presentViewController(autocompleteController, animated: true, completion: nil)
         
