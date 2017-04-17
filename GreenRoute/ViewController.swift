@@ -43,11 +43,13 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     var dataDict:[Double:Double] = [:]
     var dataDictTraffic:[Double:Double] = [:]
     var hybriddataDict:[Double:Double] = [:]
+    var semidataDict:[Double:Double] = [:]
     var routeDict:[UInt:Double] = [:]
     var totalFuel:Double = 0
     var finalDict:Array<Dictionary<NSObject, AnyObject>> = []
     var hybrid: Bool = false
     var NOThybrid: Bool = false
+    var semi:Bool = false
     
     var sourceTap: Bool = false
 
@@ -101,23 +103,31 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         if(justOnce){
             let alertController = UIAlertController(title: "Car Type", message: "Please select your car type", preferredStyle: .Alert)
             
-            let actionYes = UIAlertAction(title: "Hybrid", style: .Default) { (action:UIAlertAction) in
-                print("You've pressed the Yes button")
+            let actionHybrid = UIAlertAction(title: "Hybrid", style: .Default) { (action:UIAlertAction) in
+                print("You've pressed the Hybrid button")
                 self.hybrid = true
             }
             
-            let actionNo = UIAlertAction(title: "Normal", style: .Default) { (action:UIAlertAction) in
-                print("You've pressed No button")
+            let actionNormal = UIAlertAction(title: "Normal", style: .Default) { (action:UIAlertAction) in
+                print("You've pressed Normal button")
                 self.NOThybrid = true
+            }
+            
+            let actionSemi = UIAlertAction(title: "Semi-Truck", style: .Default) { (action:UIAlertAction) in
+                print("You've pressed the Semi button")
+                self.semi = true
             }
             let image:UIImage? = UIImage(named:"hybrid.jpg")!.imageWithRenderingMode(.AlwaysOriginal)
             let image1:UIImage? = UIImage(named:"conventional.jpg")!.imageWithRenderingMode(.AlwaysOriginal)
+            let image2:UIImage? = UIImage(named:"semi-truck.jpg")!.imageWithRenderingMode(.AlwaysOriginal)
 
-            actionYes.setValue(image, forKey: "image")
-            actionNo.setValue(image1, forKey: "image")
+            actionHybrid.setValue(image, forKey: "image")
+            actionNormal.setValue(image1, forKey: "image")
+            actionSemi.setValue(image2, forKey: "image")
             
-            alertController.addAction(actionYes)
-            alertController.addAction(actionNo)
+            alertController.addAction(actionHybrid)
+            alertController.addAction(actionNormal)
+            alertController.addAction(actionSemi)
             
             self.presentViewController(alertController, animated: true, completion:nil)
             justOnce=false
@@ -206,6 +216,19 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         hybriddataDict[75] = 0.0232970932956804
         hybriddataDict[80] = 0.0238095236732426
         hybriddataDict[85] = 0.0243817483582131
+        
+        //MARH: semi-data dict
+        
+        semidataDict[7] = 0.337837837837838
+        semidataDict[15] = 0.259067357512953
+        semidataDict[19] = 0.187617260787992
+        semidataDict[33] = 0.144300144300144
+        semidataDict[48.4] = 0.132978723404255
+        semidataDict[55] = 0.0904159132007233
+        semidataDict[60] = 0.125
+        
+        //semi-truck
+        
 
         /*
          * Something!
@@ -268,6 +291,12 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         return k
     }
     
+    func nextHighestSemi(n: Double) -> Double? {
+        let higher:Array<Double> = semidataDict.keys.filter{$0 >= n}
+        let k = higher.isEmpty ? 0.125 : semidataDict[higher.minElement()!]
+        return k
+    }
+    
     func nextHighestHybrid(n: Double) -> Double? {
         let higher1:Array<Double> = hybriddataDict.keys.filter{$0 >= n}
         let k1 = higher1.isEmpty ? nil : hybriddataDict[higher1.minElement()!]
@@ -304,20 +333,25 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
             print("speed \(speed)")
             var minMiles:Double = 0.0
             var minMilesHy:Double = 0.0
+            var minMilesSemi:Double = 0.0
             
             if(self.hybrid == true){
-                print("hybrid")
                 minMilesHy = nextHighestHybrid(speed)!
-                print("MIN MILES\(minMilesHy)")
             }
-            if(self.NOThybrid == true){
+            else if(self.NOThybrid == true){
                 minMiles = nextHighest(speed)!
+            }
+            else if(self.semi == true){
+                print("in semi")
+                minMilesSemi = nextHighestSemi(speed)!
             }
             distanceLeg += distanceMiles
             if(self.hybrid){
                 fuelForLeg += minMilesHy*distanceMiles
-            } else {
+            } else if(self.NOThybrid){
                 fuelForLeg += minMiles*distanceMiles
+            } else if(self.semi){
+                fuelForLeg += minMilesSemi*distanceMiles
             }
         }
         print("GALLONS\(fuelForLeg)")
@@ -392,8 +426,11 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         self.differenceFuel = fuel1-fuel2
         self.percentDiffFuel = (self.differenceFuel/fuel1)*100
         self.fuelSaved = self.differenceFuel*2.50
-        self.savingCO2 = self.differenceFuel*19.64
-        
+        if(self.semi){
+           self.savingCO2 = self.differenceFuel*22.38
+        } else {
+             self.savingCO2 = self.differenceFuel*19.64
+        }
         let a = String(format: "%.2f", self.differenceFuel)
         let b = String(format: "%.2f", self.fuelSaved)
         let c = String(format: "%.2f", self.savingCO2)
