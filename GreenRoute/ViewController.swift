@@ -71,9 +71,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     var sourceStr: String = ""
     var destinationStr: String = ""
     var flagForRoute:Bool = true
-    
-    
-    
+ 
     //markers
     var originMarker: GMSMarker!
     var destinationMarker: GMSMarker!
@@ -101,8 +99,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     
     override func viewDidAppear(animated: Bool) {
         if(justOnce){
-            
-            
             let alertController = UIAlertController(title: "Car Type", message: "Please select your car type", preferredStyle: .Alert)
             
             let actionYes = UIAlertAction(title: "Hybrid", style: .Default) { (action:UIAlertAction) in
@@ -231,7 +227,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
                             for item in self.returnedRoute {
                                 print("ROUTE:\(self.displayRoute)")
                                 self.overviewPolyline = item["overview_polyline"] as! Dictionary<NSObject, AnyObject>
-                                print(item)
+                                //print(item)
                                 var legs = item["legs"] as! Array<Dictionary<NSObject, AnyObject>>
                                 
                                 let startLoc = legs[0]["start_location"] as! Dictionary<NSObject, AnyObject>
@@ -420,7 +416,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
             var start_point1 = CLLocationCoordinate2DMake(speedMarker1["lat"] as! Double, speedMarker1["lng"] as! Double)
             speedMarker = GMSMarker(position: start_point1)
             speedMarker.map = self.mapView1
-            speedMarker.icon = UIImage(named: "smallestcar.jpeg")
+            speedMarker.icon = UIImage(named: "fastcar1.jpg")
             speedMarker.snippet = "\(self.fasterBy)"
             speedMarker.title = "Faster Route!"
             
@@ -429,7 +425,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
             var start_point = CLLocationCoordinate2DMake(speedMarker1["lat"] as! Double, speedMarker1["lng"] as! Double)
             speedMarker = GMSMarker(position: start_point)
             speedMarker.map = self.mapView1
-            speedMarker.icon = UIImage(named: "smallestcar.jpeg")
+            speedMarker.icon = UIImage(named: "fastcar1.jpg")
             speedMarker.snippet = "Faster route is also the most fuel efficient route!"
             speedMarker.title = "Faster Route!"
             mapView1.selectedMarker=speedMarker
@@ -504,10 +500,13 @@ extension ViewController: GMSAutocompleteViewControllerDelegate{
             let lngMin = long - lngOffset;
             let initialLocation = CLLocationCoordinate2D(latitude: latMax, longitude: lngMax)
             let otherLocation = CLLocationCoordinate2D(latitude: latMin, longitude: lngMin)
+            print(initialLocation)
             bounds = GMSCoordinateBounds(coordinate: initialLocation, coordinate: otherLocation)
-            
+            mapView1.camera = mapView1.cameraForBounds(bounds, insets: UIEdgeInsets())!
+          //  mapView1.animateWithCameraUpdate(GMSCameraUpdate.fitBounds(bounds))
             // 7
-            mapView1.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+//            mapView1.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+            //mapView1.animateToLocation(initialLocation)
             
             // 8
             locationManager.stopUpdatingLocation()
