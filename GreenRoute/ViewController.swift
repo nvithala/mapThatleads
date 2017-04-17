@@ -138,32 +138,17 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     }
     
     @IBAction func openGmaps(sender: AnyObject) {
-        
-        print("in open maps")
         var googleURLString = "http://maps.google.com?f=d&saddr=\(self.sourceStr)&daddr=\(self.destinationStr)&sspn=0.2,0.1&nav=1"
         googleURLString = googleURLString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
         print(self.originCoordinate)
         if let googleUrl = NSURL(string: googleURLString) {
             if UIApplication.sharedApplication().canOpenURL(googleUrl){
-                //let alertController = UIAlertController(title: "AHHH", message: "Please select your car type", preferredStyle: .Alert)
-                //self.presentViewController(alertController, animated: true, completion:nil)
                 UIApplication.sharedApplication().openURL(googleUrl)
             } else {
-                let alertController = UIAlertController(title: "Car Type", message: "Please select your car type", preferredStyle: .Alert)
+                let alertController = UIAlertController(title: "Error", message: "Something is wrong!", preferredStyle: .Alert)
                 self.presentViewController(alertController, animated: true, completion:nil)
             }
         }
-//        
-//        if(UIApplication.sharedApplication().canOpenURL(NSURL(string:"comgooglemaps://")!)){
-//            let alertController = UIAlertController(title: "Car Type", message: "Please select your car type", preferredStyle: .Alert)
-//            //UIApplication.sharedApplication().ope
-//            UIApplication.sharedApplication().openURL(NSURL(string:"comgooglemaps://")!)
-//            self.presentViewController(alertController, animated: true, completion:nil)
-//        } else {
-//            let alertController = UIAlertController(title: "AHHH", message: "Please select your car type", preferredStyle: .Alert)
-//            self.presentViewController(alertController, animated: true, completion:nil)
-//            print("Can't use comgooglemaps://")
-//        }
         
     }
     

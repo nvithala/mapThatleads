@@ -9,16 +9,9 @@
 /* Begin PBXBuildFile section */
 		5E1130851E940BC500BFBA51 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1130841E940BC500BFBA51 /* Helper.swift */; };
 		5E1130871E94338400BFBA51 /* smallFast.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 5E1130861E94338400BFBA51 /* smallFast.jpeg */; };
-		5E1130891E9445A500BFBA51 /* smallestcar.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 5E1130881E9445A500BFBA51 /* smallestcar.jpeg */; };
 		5E269FF21E95C30A001C0E1D /* temp.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E269FF11E95C30A001C0E1D /* temp.m */; };
-		5E4F26FB1E9BCDBB00867527 /* JSSAlertView in Resources */ = {isa = PBXBuildFile; fileRef = 5E4F26FA1E9BCDBB00867527 /* JSSAlertView */; };
 		5E661F511EA000F200B8A207 /* hybrid.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E661F501EA000F100B8A207 /* hybrid.jpg */; };
-		5E661F531EA001A600B8A207 /* car123.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E661F521EA001A600B8A207 /* car123.jpg */; };
-		5E661F551EA0041400B8A207 /* H.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E661F541EA0041400B8A207 /* H.jpg */; };
-		5E661F571EA004A500B8A207 /* H1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E661F561EA004A500B8A207 /* H1.jpg */; };
-		5E661F591EA0073600B8A207 /* H12.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 5E661F581EA0073600B8A207 /* H12.jpeg */; };
 		5E661F5B1EA0088100B8A207 /* conventional.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E661F5A1EA0088100B8A207 /* conventional.jpg */; };
-		5E852D7A1E9EB80700F187C7 /* car.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E852D791E9EB80700F187C7 /* car.jpg */; };
 		5E852D7C1E9EB85800F187C7 /* car1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E852D7B1E9EB85800F187C7 /* car1.jpg */; };
 		5E85B45A1E8020CE00E7E8D2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E85B4591E8020CE00E7E8D2 /* AppDelegate.swift */; };
 		5E85B45C1E8020CE00E7E8D2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E85B45B1E8020CE00E7E8D2 /* ViewController.swift */; };
@@ -42,9 +35,6 @@
 		5E85B48A1E802BC800E7E8D2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E85B4891E802BC800E7E8D2 /* UIKit.framework */; };
 		5E85B48C1E802BD000E7E8D2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E85B48B1E802BD000E7E8D2 /* CoreGraphics.framework */; };
 		5E85B48E1E802BD800E7E8D2 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E85B48D1E802BD800E7E8D2 /* Accelerate.framework */; };
-		5E88BA771E8DB58700C3B0D5 /* icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E88BA761E8DB58700C3B0D5 /* icon.jpg */; };
-		5E88BA791E8EEDE400C3B0D5 /* small.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 5E88BA781E8EEDE400C3B0D5 /* small.jpeg */; };
-		5E88BA7B1E8EEFDB00C3B0D5 /* smaller.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 5E88BA7A1E8EEFDB00C3B0D5 /* smaller.jpeg */; };
 		5E88BA7D1E8EFBFC00C3B0D5 /* ios in Resources */ = {isa = PBXBuildFile; fileRef = 5E88BA7C1E8EFBFC00C3B0D5 /* ios */; };
 		5E99A7BE1E9498140020CE66 /* Greenroute_icon new.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E99A7BD1E9498140020CE66 /* Greenroute_icon new.jpg */; };
 		5E99A7C01E94982A0020CE66 /* lemon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5E99A7BF1E94982A0020CE66 /* lemon.jpg */; };
@@ -58,17 +48,10 @@
 /* Begin PBXFileReference section */
 		5E1130841E940BC500BFBA51 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		5E1130861E94338400BFBA51 /* smallFast.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = smallFast.jpeg; sourceTree = "<group>"; };
-		5E1130881E9445A500BFBA51 /* smallestcar.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = smallestcar.jpeg; sourceTree = "<group>"; };
 		5E269FF01E95C30A001C0E1D /* GreenRoute-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GreenRoute-Bridging-Header.h"; sourceTree = "<group>"; };
 		5E269FF11E95C30A001C0E1D /* temp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = temp.m; sourceTree = "<group>"; };
-		5E4F26FA1E9BCDBB00867527 /* JSSAlertView */ = {isa = PBXFileReference; lastKnownFileType = folder; path = JSSAlertView; sourceTree = "<group>"; };
 		5E661F501EA000F100B8A207 /* hybrid.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = hybrid.jpg; sourceTree = "<group>"; };
-		5E661F521EA001A600B8A207 /* car123.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = car123.jpg; sourceTree = "<group>"; };
-		5E661F541EA0041400B8A207 /* H.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = H.jpg; sourceTree = "<group>"; };
-		5E661F561EA004A500B8A207 /* H1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = H1.jpg; sourceTree = "<group>"; };
-		5E661F581EA0073600B8A207 /* H12.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = H12.jpeg; sourceTree = "<group>"; };
 		5E661F5A1EA0088100B8A207 /* conventional.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = conventional.jpg; sourceTree = "<group>"; };
-		5E852D791E9EB80700F187C7 /* car.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = car.jpg; sourceTree = "<group>"; };
 		5E852D7B1E9EB85800F187C7 /* car1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = car1.jpg; sourceTree = "<group>"; };
 		5E85B4561E8020CE00E7E8D2 /* GreenRoute.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenRoute.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E85B4591E8020CE00E7E8D2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -94,9 +77,6 @@
 		5E85B4891E802BC800E7E8D2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5E85B48B1E802BD000E7E8D2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		5E85B48D1E802BD800E7E8D2 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		5E88BA761E8DB58700C3B0D5 /* icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = icon.jpg; path = ../icon.jpg; sourceTree = "<group>"; };
-		5E88BA781E8EEDE400C3B0D5 /* small.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = small.jpeg; sourceTree = "<group>"; };
-		5E88BA7A1E8EEFDB00C3B0D5 /* smaller.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = smaller.jpeg; sourceTree = "<group>"; };
 		5E88BA7C1E8EFBFC00C3B0D5 /* ios */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ios; sourceTree = "<group>"; };
 		5E99A7BD1E9498140020CE66 /* Greenroute_icon new.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Greenroute_icon new.jpg"; sourceTree = "<group>"; };
 		5E99A7BF1E94982A0020CE66 /* lemon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lemon.jpg; sourceTree = "<group>"; };
@@ -143,7 +123,6 @@
 				5E85B4771E80279700E7E8D2 /* CoreLocation.framework */,
 				5ECF16881EA1132D006EF484 /* GooglePlacePicker.bundle */,
 				5ECF16861EA11319006EF484 /* GooglePlaces.bundle */,
-				5E4F26FA1E9BCDBB00867527 /* JSSAlertView */,
 				5EED85781E956E1C00D6F2F5 /* GooglePlacePicker.framework */,
 				5EED85761E956E0800D6F2F5 /* GooglePlaces.framework */,
 				5E85B4711E80275A00E7E8D2 /* GoogleMapsBase.framework */,
@@ -191,21 +170,12 @@
 		5E85B4581E8020CE00E7E8D2 /* GreenRoute */ = {
 			isa = PBXGroup;
 			children = (
-				5E661F541EA0041400B8A207 /* H.jpg */,
 				5E661F5A1EA0088100B8A207 /* conventional.jpg */,
-				5E661F561EA004A500B8A207 /* H1.jpg */,
-				5E661F581EA0073600B8A207 /* H12.jpeg */,
 				5E661F501EA000F100B8A207 /* hybrid.jpg */,
-				5E661F521EA001A600B8A207 /* car123.jpg */,
 				5E99A7BD1E9498140020CE66 /* Greenroute_icon new.jpg */,
 				5E99A7BF1E94982A0020CE66 /* lemon.jpg */,
-				5E852D791E9EB80700F187C7 /* car.jpg */,
 				5E852D7B1E9EB85800F187C7 /* car1.jpg */,
-				5E1130881E9445A500BFBA51 /* smallestcar.jpeg */,
 				5E1130861E94338400BFBA51 /* smallFast.jpeg */,
-				5E88BA7A1E8EEFDB00C3B0D5 /* smaller.jpeg */,
-				5E88BA781E8EEDE400C3B0D5 /* small.jpeg */,
-				5E88BA761E8DB58700C3B0D5 /* icon.jpg */,
 				5E85B4591E8020CE00E7E8D2 /* AppDelegate.swift */,
 				5E85B45B1E8020CE00E7E8D2 /* ViewController.swift */,
 				5E85B45D1E8020CE00E7E8D2 /* Main.storyboard */,
@@ -277,26 +247,16 @@
 			files = (
 				5E99A7BE1E9498140020CE66 /* Greenroute_icon new.jpg in Resources */,
 				5E88BA7D1E8EFBFC00C3B0D5 /* ios in Resources */,
-				5E661F531EA001A600B8A207 /* car123.jpg in Resources */,
-				5E88BA7B1E8EEFDB00C3B0D5 /* smaller.jpeg in Resources */,
 				5E85B4641E8020CE00E7E8D2 /* LaunchScreen.storyboard in Resources */,
 				5E1130871E94338400BFBA51 /* smallFast.jpeg in Resources */,
 				5E85B45F1E8020CE00E7E8D2 /* Main.storyboard in Resources */,
 				5E852D7C1E9EB85800F187C7 /* car1.jpg in Resources */,
 				5ECF16891EA1132E006EF484 /* GooglePlacePicker.bundle in Resources */,
-				5E661F551EA0041400B8A207 /* H.jpg in Resources */,
 				A8F2AEE21E89A901006C942B /* Assets.xcassets in Resources */,
-				5E1130891E9445A500BFBA51 /* smallestcar.jpeg in Resources */,
-				5E88BA771E8DB58700C3B0D5 /* icon.jpg in Resources */,
-				5E88BA791E8EEDE400C3B0D5 /* small.jpeg in Resources */,
-				5E661F591EA0073600B8A207 /* H12.jpeg in Resources */,
-				5E852D7A1E9EB80700F187C7 /* car.jpg in Resources */,
 				5E85B46C1E80271100E7E8D2 /* GoogleMaps.bundle in Resources */,
 				5ECF16871EA11319006EF484 /* GooglePlaces.bundle in Resources */,
 				5E661F5B1EA0088100B8A207 /* conventional.jpg in Resources */,
 				5E661F511EA000F200B8A207 /* hybrid.jpg in Resources */,
-				5E4F26FB1E9BCDBB00867527 /* JSSAlertView in Resources */,
-				5E661F571EA004A500B8A207 /* H1.jpg in Resources */,
 				5E99A7C01E94982A0020CE66 /* lemon.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
