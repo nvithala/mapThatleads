@@ -228,8 +228,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         semidataDict[60] = 0.125
         
         //semi-truck
-        
-
         /*
          * Something!
         */
@@ -330,7 +328,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
             let distanceMiles = distanceMetres * 0.000621371
             let durationHours = durationSeconds / 3600
             let speed:Double = distanceMiles / durationHours
-            print("speed \(speed)")
+            //print("speed \(speed)")
             var minMiles:Double = 0.0
             var minMilesHy:Double = 0.0
             var minMilesSemi:Double = 0.0
@@ -399,8 +397,12 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     func configureMapAndMarkersForRoute() {
         mapView1.clear()
         clearMarkers()
+        let bounds1 = GMSCoordinateBounds(coordinate: self.originCoordinate, coordinate: self.destinationCoordinate)
+        mapView1.animateWithCameraUpdate(GMSCameraUpdate.fitBounds(bounds1))
         
-        mapView1.camera = GMSCameraPosition.cameraWithTarget(self.originCoordinate, zoom: 9.0)
+       // mapView1.camera = mapView1.cameraForBounds(bounds1, insets: UIEdgeInsets())!
+        
+        //mapView1.camera = GMSCameraPosition.cameraWithTarget(self.originCoordinate, zoom: 9.0)
         originMarker = GMSMarker(position: self.originCoordinate)
         originMarker.map = self.mapView1
         originMarker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
@@ -467,6 +469,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
             speedMarker.title = "Faster Route!"
             mapView1.selectedMarker=speedMarker
         }
+        
+       
+
         
     }
     
@@ -539,10 +544,10 @@ extension ViewController: GMSAutocompleteViewControllerDelegate{
             let otherLocation = CLLocationCoordinate2D(latitude: latMin, longitude: lngMin)
             print(initialLocation)
             bounds = GMSCoordinateBounds(coordinate: initialLocation, coordinate: otherLocation)
-            mapView1.camera = mapView1.cameraForBounds(bounds, insets: UIEdgeInsets())!
+            //mapView1.camera = mapView1.cameraForBounds(bounds, insets: UIEdgeInsets())!
           //  mapView1.animateWithCameraUpdate(GMSCameraUpdate.fitBounds(bounds))
-            // 7
-//            mapView1.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+            // 7 initial location zoom in
+           mapView1.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
             //mapView1.animateToLocation(initialLocation)
             
             // 8
