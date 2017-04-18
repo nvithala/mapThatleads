@@ -26,7 +26,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     
     //MARK:from here
     let baseURLDirections:String = "https://maps.googleapis.com/maps/api/directions/json?"
-    var selectedRoute: Dictionary<NSObject,AnyObject>!
     var returnedRoute: Array<Dictionary<NSObject, AnyObject>> = []
     var overviewPolyline: Dictionary<NSObject,AnyObject>!
     var originCoordinate: CLLocationCoordinate2D!
@@ -47,6 +46,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     var routeDict:[UInt:Double] = [:]
     var totalFuel:Double = 0
     var finalDict:Array<Dictionary<NSObject, AnyObject>> = []
+    var storeDistance:Array<Dictionary<NSObject, AnyObject>> = []
     var hybrid: Bool = false
     var NOThybrid: Bool = false
     var semi:Bool = false
@@ -104,17 +104,17 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
             let alertController = UIAlertController(title: "Car Type", message: "Please select your car type", preferredStyle: .Alert)
             
             let actionHybrid = UIAlertAction(title: "Hybrid", style: .Default) { (action:UIAlertAction) in
-                print("You've pressed the Hybrid button")
+               // print("You've pressed the Hybrid button")
                 self.hybrid = true
             }
             
             let actionNormal = UIAlertAction(title: "Normal", style: .Default) { (action:UIAlertAction) in
-                print("You've pressed Normal button")
+              //  print("You've pressed Normal button")
                 self.NOThybrid = true
             }
             
             let actionSemi = UIAlertAction(title: "Semi-Truck", style: .Default) { (action:UIAlertAction) in
-                print("You've pressed the Semi button")
+                //print("You've pressed the Semi button")
                 self.semi = true
             }
             let image:UIImage? = UIImage(named:"hybrid.jpg")!.imageWithRenderingMode(.AlwaysOriginal)
@@ -141,12 +141,14 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         self.routeDict = [:]
         self.arrayOfPoints = []
         self.dicForCustomMarkers = []
+        self.returnedRoute = []
+        self.overviewPolyline = [:]
     }
     
     @IBAction func openGmaps(sender: AnyObject) {
         var googleURLString = "http://maps.google.com?f=d&saddr=\(self.sourceStr)&daddr=\(self.destinationStr)&sspn=0.2,0.1&nav=1"
         googleURLString = googleURLString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
-        print(self.originCoordinate)
+       // print(self.originCoordinate)
         if let googleUrl = NSURL(string: googleURLString) {
             if UIApplication.sharedApplication().canOpenURL(googleUrl){
                 UIApplication.sharedApplication().openURL(googleUrl)
@@ -160,9 +162,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     
     @IBAction func parseAndGet(sender: AnyObject) {
         view.endEditing(true)
-        let camera: GMSCameraPosition = GMSCameraPosition.cameraWithLatitude(48.857165, longitude: 2.354613, zoom: 1.0)
-        mapView1.camera = camera
-         sourceStr = origin.text!
+//        let camera: GMSCameraPosition = GMSCameraPosition.cameraWithLatitude(48.857165, longitude: 2.354613, zoom: 1.0)
+//        mapView1.camera = camera
+        sourceStr = origin.text!
         destinationStr = destination.text!
        
         var error: NSError?
@@ -178,8 +180,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         self.finalDisplayString = ""
         self.fasterBy = ""
         
-        var directionsURl = baseURLDirections+"origin="+sourceStr+"&destination="+destinationStr+"&alternatives=true"+"&departure_time"+"1490993519000"
+        var directionsURl = baseURLDirections+"origin="+sourceStr+"&destination="+destinationStr+"&alternatives=true"
         directionsURl = directionsURl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+       // print("final url\(directionsURl)")
         let finalURL = NSURL(string: directionsURl)
         let directionsData = NSData(contentsOfURL: finalURL!)
         
@@ -241,14 +244,16 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
                     if(error != nil){
                         print(error)
                     } else {
+                        
                         let status = dictionary["status"] as! String
                         if status == "OK" {
+                           // print(dictionary["routes"])
                             self.returnedRoute = (dictionary["routes"] as! Array<Dictionary<NSObject, AnyObject>>)
                             
                             for item in self.returnedRoute {
                                 print("ROUTE:\(self.displayRoute)")
                                 self.overviewPolyline = item["overview_polyline"] as! Dictionary<NSObject, AnyObject>
-                                //print(item)
+                                print("polyline size is\(self.overviewPolyline.count)")
                                 var legs = item["legs"] as! Array<Dictionary<NSObject, AnyObject>>
                                 
                                 let startLoc = legs[0]["start_location"] as! Dictionary<NSObject, AnyObject>
@@ -266,10 +271,12 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
                                     self.minDuration = self.bufferDuration
                                     self.routeWithMinDuration = self.displayRoute
                                 }
-                                var tempdict = ["route":self.bufferDuration,"polyline":self.overviewPolyline]
+                                var tempdict = ["time":self.bufferDuration,"polyline":self.overviewPolyline]
                                 self.finalDict.append(tempdict as! Dictionary<NSObject, AnyObject>)
                                 self.displayRoute = self.displayRoute+1
                             }
+                            print("mi duration is:\(self.minDuration)")
+                            print("min fuel route is\(self.routeWithMinFuelNo),route with min duration\(self.routeWithMinDuration)")
                             self.configureMapAndMarkersForRoute()
                             self.drawRoute()
                         }
@@ -314,8 +321,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         let steps = dum as NSArray
         let noOFSteps = steps.count
         let mid = Int(noOFSteps/2)
-        print(steps.count)
-        print("MID\(mid)")
+        //print(steps.count)
+        //print("MID\(mid)")
         let temp = steps[mid] as! Dictionary<NSObject,AnyObject>
         let temp1 = temp["start_location"] as! Dictionary<NSObject,AnyObject>
         self.dicForCustomMarkers.append(temp1)
@@ -340,7 +347,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
                 minMiles = nextHighest(speed)!
             }
             else if(self.semi == true){
-                print("in semi")
+                //print("in semi")
                 minMilesSemi = nextHighestSemi(speed)!
             }
             distanceLeg += distanceMiles
@@ -362,11 +369,13 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
             let steps = leg["steps"] as! Array<Dictionary<NSObject, AnyObject>>
             var fuelForLeg = calFuel(steps)
             if(fuelForLeg < self.minFuelOverall){
-                minFuelOverall = fuelForLeg
+                self.minFuelOverall = fuelForLeg
                 self.routeWithMinFuelNo = self.displayRoute
             }
             self.routeDict[displayRoute] = fuelForLeg
         }
+        print("route dictionary is:\(self.routeDict)")
+        print("route with min fuel\(self.routeWithMinFuelNo)")
         
         //not important now just to calculate distance and duration and display them.
         totalDistanceInMeters = 0
@@ -386,10 +395,12 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         let remainingMins = mins % 60
         let remainingSecs = totalDurationInSeconds % 60
         totalDuration = "Duration: \(days) d, \(remainingHours) h, \(remainingMins) mins, \(remainingSecs) secs"
-        distance.text = totalDistance
-        duration.text = totalDuration
+        //distance.text = totalDistance
+        //duration.text = totalDuration
         print(totalDuration)
         print(totalDistance)
+        let tempdict = ["distance":totalDistance,"duration":totalDuration]
+        self.storeDistance.append(tempdict)
         self.displayDuration = "\(self.displayDuration)" + "Route \(self.displayRoute) \(totalDistance) \(totalDuration) \n"
     }
     
@@ -397,12 +408,13 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     func configureMapAndMarkersForRoute() {
         mapView1.clear()
         clearMarkers()
-        let bounds1 = GMSCoordinateBounds(coordinate: self.originCoordinate, coordinate: self.destinationCoordinate)
-        mapView1.animateWithCameraUpdate(GMSCameraUpdate.fitBounds(bounds1))
+       let bounds1 = GMSCoordinateBounds(coordinate: self.originCoordinate, coordinate: self.destinationCoordinate)
+      mapView1.animateWithCameraUpdate(GMSCameraUpdate.fitBounds(bounds1))
+//
+//       // mapView1.camera = mapView1.cameraForBounds(bounds1, insets: UIEdgeInsets())!
+//        
+  //       mapView1.camera = GMSCameraPosition.cameraWithTarget(self.originCoordinate, zoom: 9.0)
         
-       // mapView1.camera = mapView1.cameraForBounds(bounds1, insets: UIEdgeInsets())!
-        
-        //mapView1.camera = GMSCameraPosition.cameraWithTarget(self.originCoordinate, zoom: 9.0)
         originMarker = GMSMarker(position: self.originCoordinate)
         originMarker.map = self.mapView1
         originMarker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
@@ -415,11 +427,12 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         
         //MARK: for speed comparisions
         let x = self.finalDict[Int(self.routeWithMinDuration)] as Dictionary<NSObject,AnyObject>
-        let y = x["route"] as! Int
+        let y = x["time"] as! Int
         let z = self.finalDict[Int(self.routeWithMinFuelNo)] as Dictionary<NSObject,AnyObject>
-        let w = z["route"] as! Int
+        let w = z["time"] as! Int
         let diff = w-y
-        self.fasterBy = "This route is faster by"+String(diff/60)+"mins"
+        print("DIFFFF\(diff)")
+        self.fasterBy = "This route is faster by "+String(diff/60)+"mins"
         print(self.fasterBy)
         
         //MARK:fuel calculations
@@ -440,6 +453,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
         self.finalDisplayString = "Diff in fuel:"+a+"gallons,\n $ Saved:"+b+"$,\n Reduction in CO2 emissions:"+c+"lbs"
         
         //MARK: displaying custom marker with calculations
+        let disDist = self.storeDistance[Int(self.routeWithMinDuration)]
+        let dist = disDist["distance"] as! String
+        let dur = disDist["duration"] as! String
         if(self.routeWithMinDuration != self.routeWithMinFuelNo){
             var customMarker = self.dicForCustomMarkers[Int(self.routeWithMinFuelNo)]
             let start_point = CLLocationCoordinate2DMake(customMarker["lat"] as! Double, customMarker["lng"] as! Double)
@@ -456,8 +472,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
             speedMarker = GMSMarker(position: start_point1)
             speedMarker.map = self.mapView1
             speedMarker.icon = UIImage(named: "fastcar1.jpg")
-            speedMarker.snippet = "\(self.fasterBy)"
-            speedMarker.title = "Faster Route!"
+            speedMarker.snippet = "\(self.fasterBy)\n\(dist)\n\(dur)"
+            speedMarker.title = "Faster Route!\n"
             
         } else {
             var speedMarker1 = self.dicForCustomMarkers[Int(self.routeWithMinFuelNo)]
@@ -476,7 +492,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     }
     
     func drawRoute() {
-        for step in finalDict {
+        self.arrayOfPoints = []
+        print("count of final dic\(self.finalDict.count)")
+        for step in self.finalDict {
             var poly = step["polyline"] as! Dictionary<String,AnyObject>
             var points = poly["points"] as! String
             self.arrayOfPoints.append(points)
@@ -486,7 +504,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
     
     //MARK: drawing routes based on fuel vs duration factor
     func compareAndDraw(){
+        print("array of points size\(self.arrayOfPoints.count)")
         if(self.routeWithMinDuration == self.routeWithMinFuelNo){
+            print(self.routeWithMinFuelNo)
             var points = self.arrayOfPoints[Int(self.routeWithMinFuelNo)]
             let path: GMSPath = GMSPath(fromEncodedPath: points)!
             routePolyline = GMSPolyline(path: path)
@@ -495,6 +515,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
             routePolyline.map = mapView1
         } else {
             //MARK: calculating difference in fuel and efficiencies.
+            print(self.routeWithMinFuelNo)
+            print(self.routeWithMinDuration)
             let googlePoints = self.arrayOfPoints[Int(self.routeWithMinDuration)]
             let path: GMSPath = GMSPath(fromEncodedPath: googlePoints)!
             routePolyline = GMSPolyline(path: path)
@@ -522,6 +544,7 @@ extension ViewController: GMSAutocompleteViewControllerDelegate{
             
             // 4
             locationManager.startUpdatingLocation()
+            
             print("started updating location")
             //5
             mapView1.myLocationEnabled = true
@@ -542,7 +565,7 @@ extension ViewController: GMSAutocompleteViewControllerDelegate{
             let lngMin = long - lngOffset;
             let initialLocation = CLLocationCoordinate2D(latitude: latMax, longitude: lngMax)
             let otherLocation = CLLocationCoordinate2D(latitude: latMin, longitude: lngMin)
-            print(initialLocation)
+            //print(initialLocation)
             bounds = GMSCoordinateBounds(coordinate: initialLocation, coordinate: otherLocation)
             //mapView1.camera = mapView1.cameraForBounds(bounds, insets: UIEdgeInsets())!
           //  mapView1.animateWithCameraUpdate(GMSCameraUpdate.fitBounds(bounds))
@@ -565,7 +588,7 @@ extension ViewController: GMSAutocompleteViewControllerDelegate{
         //print("Place attributions: \(place.attributions)")
         if self.sourceTap {
             dispatch_async(dispatch_get_main_queue()){
-                print(place.formattedAddress)
+               // print(place.formattedAddress)
                 self.origin.text = place.formattedAddress! as String
             }
         }else{

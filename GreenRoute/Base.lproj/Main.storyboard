@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Green Route-->
@@ -123,13 +122,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RoL-p4-U8P" userLabel="bottomView">
                                 <rect key="frame" x="0.0" y="535" width="600" height="65"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Distance" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="L0n-Jl-XOM">
-                                        <rect key="frame" x="304" y="42" width="288" height="15"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="810-1F-fmm">
-                                        <rect key="frame" x="165" y="0.0" width="277" height="30"/>
+                                        <rect key="frame" x="162" y="18" width="277" height="30"/>
                                         <color key="backgroundColor" red="0.19414485990289798" green="0.48149614291662624" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="172" id="aCM-X1-dIo"/>
@@ -148,39 +142,20 @@
                                             <action selector="openGmaps:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ymj-26-IrU"/>
                                         </connections>
                                     </button>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Duration" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9rM-1Q-wwa">
-                                        <rect key="frame" x="8" y="42" width="288" height="15"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="288" id="gLK-Uk-T9s"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="9rM-1Q-wwa" firstAttribute="leading" secondItem="RoL-p4-U8P" secondAttribute="leadingMargin" id="Gbv-8a-URp"/>
                                     <constraint firstItem="810-1F-fmm" firstAttribute="centerY" secondItem="RoL-p4-U8P" secondAttribute="centerY" id="HVD-hy-dbp"/>
                                     <constraint firstItem="810-1F-fmm" firstAttribute="centerX" secondItem="RoL-p4-U8P" secondAttribute="centerX" id="Hx1-B3-Q4L"/>
-                                    <constraint firstItem="9rM-1Q-wwa" firstAttribute="bottom" secondItem="RoL-p4-U8P" secondAttribute="bottomMargin" id="MaD-mA-J6v"/>
-                                    <constraint firstItem="L0n-Jl-XOM" firstAttribute="top" secondItem="810-1F-fmm" secondAttribute="bottom" constant="8" symbolic="YES" id="MrO-u3-8Pz"/>
-                                    <constraint firstItem="9rM-1Q-wwa" firstAttribute="centerX" secondItem="RoL-p4-U8P" secondAttribute="centerX" id="ZSK-vS-dbo"/>
-                                    <constraint firstItem="L0n-Jl-XOM" firstAttribute="top" secondItem="RoL-p4-U8P" secondAttribute="top" constant="40" id="aDF-nz-2EU"/>
-                                    <constraint firstItem="L0n-Jl-XOM" firstAttribute="centerX" secondItem="RoL-p4-U8P" secondAttribute="centerX" id="aGw-Km-XYf"/>
                                     <constraint firstItem="810-1F-fmm" firstAttribute="top" secondItem="RoL-p4-U8P" secondAttribute="top" id="fBr-az-351"/>
-                                    <constraint firstItem="L0n-Jl-XOM" firstAttribute="trailing" secondItem="RoL-p4-U8P" secondAttribute="trailingMargin" id="s5E-jn-pgm"/>
-                                    <constraint firstItem="L0n-Jl-XOM" firstAttribute="leading" secondItem="9rM-1Q-wwa" secondAttribute="trailing" constant="8" symbolic="YES" id="u3s-da-Dfm"/>
-                                    <constraint firstItem="9rM-1Q-wwa" firstAttribute="baseline" secondItem="L0n-Jl-XOM" secondAttribute="baseline" id="xyk-Rn-0AN"/>
                                     <constraint firstItem="810-1F-fmm" firstAttribute="centerX" secondItem="RoL-p4-U8P" secondAttribute="centerX" id="yI3-VR-QPV"/>
+                                    <constraint firstAttribute="bottom" secondItem="810-1F-fmm" secondAttribute="bottom" constant="17" id="yod-bu-neq"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
-                                        <exclude reference="ZSK-vS-dbo"/>
                                         <exclude reference="Hx1-B3-Q4L"/>
                                         <exclude reference="fBr-az-351"/>
                                         <exclude reference="yI3-VR-QPV"/>
-                                        <exclude reference="MrO-u3-8Pz"/>
-                                        <exclude reference="aGw-Km-XYf"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -213,9 +188,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="destination" destination="zf2-Is-aoD" id="sfF-D5-CLB"/>
-                        <outlet property="distance" destination="L0n-Jl-XOM" id="kt3-n2-FQ4"/>
                         <outlet property="dummy" destination="YXA-cd-EWy" id="LJc-Zn-nDj"/>
-                        <outlet property="duration" destination="9rM-1Q-wwa" id="47T-AP-cDZ"/>
                         <outlet property="mapView1" destination="VUT-jA-b6d" id="Rht-vT-reT"/>
                         <outlet property="origin" destination="tFq-ay-Ez8" id="xAs-q4-1In"/>
                     </connections>
