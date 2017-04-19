@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -119,8 +119,8 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RoL-p4-U8P" userLabel="bottomView">
-                                <rect key="frame" x="0.0" y="535" width="600" height="65"/>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RoL-p4-U8P" userLabel="bottomView">
+                                <rect key="frame" x="0.0" y="559" width="600" height="41"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="810-1F-fmm">
                                         <rect key="frame" x="162" y="18" width="277" height="30"/>
@@ -149,7 +149,7 @@
                                     <constraint firstItem="810-1F-fmm" firstAttribute="centerX" secondItem="RoL-p4-U8P" secondAttribute="centerX" id="Hx1-B3-Q4L"/>
                                     <constraint firstItem="810-1F-fmm" firstAttribute="top" secondItem="RoL-p4-U8P" secondAttribute="top" id="fBr-az-351"/>
                                     <constraint firstItem="810-1F-fmm" firstAttribute="centerX" secondItem="RoL-p4-U8P" secondAttribute="centerX" id="yI3-VR-QPV"/>
-                                    <constraint firstAttribute="bottom" secondItem="810-1F-fmm" secondAttribute="bottom" constant="17" id="yod-bu-neq"/>
+                                    <constraint firstAttribute="bottom" secondItem="810-1F-fmm" secondAttribute="bottom" constant="15" id="yod-bu-neq"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">

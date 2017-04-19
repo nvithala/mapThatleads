@@ -244,7 +244,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate {
                     if(error != nil){
                         print(error)
                     } else {
-                        
+                        print("result is:\(dictionary)")
                         let status = dictionary["status"] as! String
                         if status == "OK" {
                            // print(dictionary["routes"])
